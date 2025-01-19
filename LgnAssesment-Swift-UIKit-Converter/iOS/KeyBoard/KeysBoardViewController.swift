@@ -7,7 +7,7 @@
 
 import UIKit
 
-class KeyBoardViewController: UIViewController {
+class KeysBoardViewController: UIViewController {
 
     var textField = UITextField()
 

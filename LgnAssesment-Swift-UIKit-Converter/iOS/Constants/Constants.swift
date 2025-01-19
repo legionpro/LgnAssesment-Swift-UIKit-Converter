@@ -15,6 +15,11 @@ struct Constants {
     static let color5 = UIColorFromRGB(rgbValue: 0x733f2c)
     static let maxFavoriteCurrencyNumber = 4
     
+    struct mainController {
+        static let contentMargines: CGFloat = 8
+        static let pageControlHeight: CGFloat = 30
+    }
+    
     struct FavoriteCurrencyTableView {
         static let cellHeight: CGFloat = 60.0
         static let flagImageHeight: CGFloat = 100.0
@@ -29,6 +34,18 @@ struct Constants {
         static let textColor: UIColor = .black
     }
     
+    struct CurrencyListViewCell {
+        static let cellHeight: CGFloat = 60.0
+        static let codeFontSize: CGFloat = 21.0
+        static let nameFontSize: CGFloat = 21.0
+        static let flagImageHeight: CGFloat = 60.0
+        static let flagImageWidth: CGFloat = 60.0
+        static let favoriteHeight: CGFloat = 20.0
+        static let favoriteWidth: CGFloat = 20.0
+        static let flagFontSize: CGFloat = 60.0
+        static let contentMargin: CGFloat = 8.0
+    }
+
     
     static func UIColorFromRGB(rgbValue: UInt) -> UIColor {
         return UIColor(

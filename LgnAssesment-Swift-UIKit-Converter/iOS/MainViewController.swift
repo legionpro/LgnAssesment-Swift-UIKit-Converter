@@ -7,11 +7,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     @IBOutlet weak var textField: UITextField!
 
-    private let childKeyBoard = KeyBoardViewController()
+    private let childKeyBoard = KeysBoardViewController()
     private let model = CurrencyListViewModel()
     private let favoriteCellReuseIdentifier = "favoritecell"
 
@@ -30,14 +30,14 @@ class ViewController: UIViewController {
 
     lazy var favoriteCurrencyTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .yellow
+        tableView.backgroundColor = .clear
         return tableView
     }()
 
     let keyBoardCurrencyScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .yellow
+        scrollView.backgroundColor = .clear
         return scrollView
     }()
 
@@ -74,37 +74,42 @@ class ViewController: UIViewController {
     private func layoutScrollView() {
         keyBoardCurrencyScrollView.translatesAutoresizingMaskIntoConstraints =
             false
-
-        keyBoardCurrencyScrollView.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor, constant: 1
-        ).isActive = true
-        keyBoardCurrencyScrollView.leftAnchor.constraint(
-            equalTo: view.leftAnchor, constant: 8
-        ).isActive = true
-        keyBoardCurrencyScrollView.rightAnchor.constraint(
-            equalTo: view.rightAnchor, constant: -8
-        ).isActive = true
-        keyBoardCurrencyScrollView.heightAnchor.constraint(
-            equalToConstant: view.frame.height / 2
-        ).isActive = true
+        let constraints = [
+            keyBoardCurrencyScrollView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor, constant: -1),
+            keyBoardCurrencyScrollView.leftAnchor.constraint(
+                equalTo: view.leftAnchor, constant: Constants.mainController.contentMargines),
+            keyBoardCurrencyScrollView.rightAnchor.constraint(
+                equalTo: view.rightAnchor, constant: -1 * Constants.mainController.contentMargines),
+            keyBoardCurrencyScrollView.heightAnchor.constraint(
+                equalToConstant: view.frame.height / 2),
+        ]
+        NSLayoutConstraint.activate(constraints)
 
     }
 
     private func layoutPageControl() {
-        NSLayoutConstraint.activate([
+        let constraints = [
             pageControl.bottomAnchor.constraint(
                 equalTo: keyBoardCurrencyScrollView.topAnchor, constant: 0),
             pageControl.centerXAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-        ])
-        pageControl.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        pageControl.pageIndicatorTintColor = .darkGray
-        pageControl.currentPageIndicatorTintColor = .systemBlue
+            pageControl.heightAnchor.constraint(equalToConstant: Constants.mainController.pageControlHeight)
+        ]
+        pageControl.pageIndicatorTintColor = Constants.color5.withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = Constants.color5
+        NSLayoutConstraint.activate(constraints)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "some title"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.barTintColor = Constants.color4
+        self.navigationItem.title = "CONVERTER"
+        self.navigationItem.titleView?.tintColor = Constants.color5
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.color5]
+
+        self.view.backgroundColor = Constants.color4
         setupSubViews()
         setupScrollView()
         setupPageControl()
@@ -119,24 +124,26 @@ class ViewController: UIViewController {
     func setupSlideScrollView() {
         func setupKeyboardSlide() {
             keyboardSlideView.frame = CGRect(
-                x: 0, y: 0, width: view.frame.width,
-                height: view.frame.height / 2)
-            keyboardSlideView.backgroundColor = .green
+                x: 0, y: 0, width: keyBoardCurrencyScrollView.frame.width - (2 * Constants.mainController.contentMargines),
+                height: view.frame.height / 3)
+            keyboardSlideView.backgroundColor = .clear
             keyBoardCurrencyScrollView.addSubview(keyboardSlideView)
         }
 
         func setupCurrencySlide() {
             currencySlideView.frame = CGRect(
-                x: view.frame.width, y: 0, width: view.frame.width,
+                x: keyBoardCurrencyScrollView.frame.width - 16, y: 0, width: keyBoardCurrencyScrollView.frame.width - (2 * Constants.mainController.contentMargines),
                 height: view.frame.height / 2)
-            currencySlideView.backgroundColor = .blue
+            currencySlideView.backgroundColor = .clear
             keyBoardCurrencyScrollView.addSubview(currencySlideView)
         }
 
         keyBoardCurrencyScrollView.frame = CGRect(
             x: 0, y: 0, width: view.frame.width, height: view.frame.height / 2)
+        
         keyBoardCurrencyScrollView.contentSize = CGSize(
-            width: view.frame.width * CGFloat(2), height: view.frame.height / 2)
+            width: view.frame.width * CGFloat(2) - 2 * (2 * Constants.mainController.contentMargines), height: view.frame.height / 2)
+        
         keyBoardCurrencyScrollView.isPagingEnabled = true
 
         setupKeyboardSlide()
@@ -146,7 +153,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UIScrollViewDelegate {
+extension MainViewController: UIScrollViewDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
@@ -162,26 +169,7 @@ extension ViewController: UIScrollViewDelegate {
 
 }
 
-extension ViewController: KeyBoardProtocol {
-    
-    // TODO:
-    func digitButtonTap(_ button: DigitButton) {
-
-    }
-
-    // TODO:
-    func deleteButtonTap() {
-
-    }
-
-    // TODO:
-    func delimiterButtonTap() {
-
-    }
-
-}
-
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
     private func setupFavoriteCurrencyTableView() {
         favoriteCurrencyTableView.delegate = self
@@ -194,16 +182,17 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     private func layoutFavoriteCurrencyTableView() {
         favoriteCurrencyTableView.translatesAutoresizingMaskIntoConstraints =
             false
-        NSLayoutConstraint.activate([
+        let constraints = [
             favoriteCurrencyTableView.bottomAnchor.constraint(
                 equalTo: pageControl.topAnchor, constant: 0),
             favoriteCurrencyTableView.leftAnchor.constraint(
-                equalTo: view.leftAnchor, constant: 8),
+                equalTo: view.leftAnchor, constant: Constants.FavoriteCurrencyTableView.contentMargin),
             favoriteCurrencyTableView.rightAnchor.constraint(
-                equalTo: view.rightAnchor, constant: -8),
+                equalTo: view.rightAnchor, constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin),
             favoriteCurrencyTableView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 1),
-        ])
+                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.FavoriteCurrencyTableView.contentMargin),
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
 
     func tableView(
@@ -236,6 +225,28 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.lastCellFlag = true
         }
         cell.currency = model.dataModel.favoriteCurrencyList[indexPath.row]
+        cell.backgroundColor = .clear
         return cell
     }
 }
+
+extension MainViewController: KeyBoardProtocol {
+    
+    // TODO:
+    func digitButtonTap(_ button: DigitButton) {
+
+    }
+
+    // TODO:
+    func deleteButtonTap() {
+
+    }
+
+    // TODO:
+    func delimiterButtonTap() {
+
+    }
+
+}
+
+
