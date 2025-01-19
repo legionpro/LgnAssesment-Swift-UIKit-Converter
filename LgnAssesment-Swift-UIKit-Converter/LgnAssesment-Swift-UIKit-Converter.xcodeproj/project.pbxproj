@@ -24,38 +24,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9F7CCC982D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LgnAssesment-Swift-UIKit-Converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F7CCCAE2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LgnAssesment-Swift-UIKit-ConverterTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F7CCCB82D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LgnAssesment-Swift-UIKit-ConverterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7CCC982D3D2B9E006EFE35 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7CCCAE2D3D2BA1006EFE35 /* iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7CCCB82D3D2BA1006EFE35 /* iOS_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		9F7CCCC02D3D2BA1006EFE35 /* Exceptions for "LgnAssesment-Swift-UIKit-Converter" folder in "LgnAssesment-Swift-UIKit-Converter" target */ = {
+		9F7CCCC02D3D2BA1006EFE35 /* Exceptions for "iOS" folder in "iOS" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 9F7CCC972D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */;
+			target = 9F7CCC972D3D2B9E006EFE35 /* iOS */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		9F7CCC9A2D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */ = {
+		9F7CCC9A2D3D2B9E006EFE35 /* iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				9F7CCCC02D3D2BA1006EFE35 /* Exceptions for "LgnAssesment-Swift-UIKit-Converter" folder in "LgnAssesment-Swift-UIKit-Converter" target */,
+				9F7CCCC02D3D2BA1006EFE35 /* Exceptions for "iOS" folder in "iOS" target */,
 			);
-			path = "LgnAssesment-Swift-UIKit-Converter";
+			path = iOS;
 			sourceTree = "<group>";
 		};
-		9F7CCCB12D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests */ = {
+		9F7CCCB12D3D2BA1006EFE35 /* iOS_Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "LgnAssesment-Swift-UIKit-ConverterTests";
+			path = iOS_Tests;
 			sourceTree = "<group>";
 		};
-		9F7CCCBB2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests */ = {
+		9F7CCCBB2D3D2BA1006EFE35 /* iOS_IUTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "LgnAssesment-Swift-UIKit-ConverterUITests";
+			path = iOS_IUTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -88,9 +88,9 @@
 		9F7CCC8F2D3D2B9E006EFE35 = {
 			isa = PBXGroup;
 			children = (
-				9F7CCC9A2D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */,
-				9F7CCCB12D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests */,
-				9F7CCCBB2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests */,
+				9F7CCC9A2D3D2B9E006EFE35 /* iOS */,
+				9F7CCCB12D3D2BA1006EFE35 /* iOS_Tests */,
+				9F7CCCBB2D3D2BA1006EFE35 /* iOS_IUTests */,
 				9F7CCC992D3D2B9E006EFE35 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,9 +98,9 @@
 		9F7CCC992D3D2B9E006EFE35 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9F7CCC982D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter.app */,
-				9F7CCCAE2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests.xctest */,
-				9F7CCCB82D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests.xctest */,
+				9F7CCC982D3D2B9E006EFE35 /* iOS.app */,
+				9F7CCCAE2D3D2BA1006EFE35 /* iOS_Tests.xctest */,
+				9F7CCCB82D3D2BA1006EFE35 /* iOS_UITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,9 +108,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9F7CCC972D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */ = {
+		9F7CCC972D3D2B9E006EFE35 /* iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F7CCCC12D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-Converter" */;
+			buildConfigurationList = 9F7CCCC12D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
 				9F7CCC942D3D2B9E006EFE35 /* Sources */,
 				9F7CCC952D3D2B9E006EFE35 /* Frameworks */,
@@ -121,18 +121,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				9F7CCC9A2D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */,
+				9F7CCC9A2D3D2B9E006EFE35 /* iOS */,
 			);
-			name = "LgnAssesment-Swift-UIKit-Converter";
+			name = iOS;
 			packageProductDependencies = (
 			);
 			productName = "LgnAssesment-Swift-UIKit-Converter";
-			productReference = 9F7CCC982D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter.app */;
+			productReference = 9F7CCC982D3D2B9E006EFE35 /* iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9F7CCCAD2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests */ = {
+		9F7CCCAD2D3D2BA1006EFE35 /* iOS_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F7CCCC62D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-ConverterTests" */;
+			buildConfigurationList = 9F7CCCC62D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS_Tests" */;
 			buildPhases = (
 				9F7CCCAA2D3D2BA1006EFE35 /* Sources */,
 				9F7CCCAB2D3D2BA1006EFE35 /* Frameworks */,
@@ -144,18 +144,18 @@
 				9F7CCCB02D3D2BA1006EFE35 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				9F7CCCB12D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests */,
+				9F7CCCB12D3D2BA1006EFE35 /* iOS_Tests */,
 			);
-			name = "LgnAssesment-Swift-UIKit-ConverterTests";
+			name = iOS_Tests;
 			packageProductDependencies = (
 			);
 			productName = "LgnAssesment-Swift-UIKit-ConverterTests";
-			productReference = 9F7CCCAE2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests.xctest */;
+			productReference = 9F7CCCAE2D3D2BA1006EFE35 /* iOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9F7CCCB72D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests */ = {
+		9F7CCCB72D3D2BA1006EFE35 /* iOS_UITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F7CCCC92D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-ConverterUITests" */;
+			buildConfigurationList = 9F7CCCC92D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS_UITests" */;
 			buildPhases = (
 				9F7CCCB42D3D2BA1006EFE35 /* Sources */,
 				9F7CCCB52D3D2BA1006EFE35 /* Frameworks */,
@@ -167,13 +167,13 @@
 				9F7CCCBA2D3D2BA1006EFE35 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				9F7CCCBB2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests */,
+				9F7CCCBB2D3D2BA1006EFE35 /* iOS_IUTests */,
 			);
-			name = "LgnAssesment-Swift-UIKit-ConverterUITests";
+			name = iOS_UITests;
 			packageProductDependencies = (
 			);
 			productName = "LgnAssesment-Swift-UIKit-ConverterUITests";
-			productReference = 9F7CCCB82D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests.xctest */;
+			productReference = 9F7CCCB82D3D2BA1006EFE35 /* iOS_UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -213,9 +213,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9F7CCC972D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */,
-				9F7CCCAD2D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterTests */,
-				9F7CCCB72D3D2BA1006EFE35 /* LgnAssesment-Swift-UIKit-ConverterUITests */,
+				9F7CCC972D3D2B9E006EFE35 /* iOS */,
+				9F7CCCAD2D3D2BA1006EFE35 /* iOS_Tests */,
+				9F7CCCB72D3D2BA1006EFE35 /* iOS_UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,12 +271,12 @@
 /* Begin PBXTargetDependency section */
 		9F7CCCB02D3D2BA1006EFE35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9F7CCC972D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */;
+			target = 9F7CCC972D3D2B9E006EFE35 /* iOS */;
 			targetProxy = 9F7CCCAF2D3D2BA1006EFE35 /* PBXContainerItemProxy */;
 		};
 		9F7CCCBA2D3D2BA1006EFE35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9F7CCC972D3D2B9E006EFE35 /* LgnAssesment-Swift-UIKit-Converter */;
+			target = 9F7CCC972D3D2B9E006EFE35 /* iOS */;
 			targetProxy = 9F7CCCB92D3D2BA1006EFE35 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -292,10 +292,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UE8YWDNEAR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LgnAssesment-Swift-UIKit-Converter/Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -322,10 +322,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UE8YWDNEAR;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LgnAssesment-Swift-UIKit-Converter/Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -476,7 +476,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LgnAssesment-Swift-UIKit-Converter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LgnAssesment-Swift-UIKit-Converter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOS";
 			};
 			name = Debug;
 		};
@@ -495,7 +495,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LgnAssesment-Swift-UIKit-Converter.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LgnAssesment-Swift-UIKit-Converter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iOS";
 			};
 			name = Release;
 		};
@@ -545,7 +545,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F7CCCC12D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-Converter" */ = {
+		9F7CCCC12D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F7CCCC22D3D2BA1006EFE35 /* Debug */,
@@ -554,7 +554,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F7CCCC62D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-ConverterTests" */ = {
+		9F7CCCC62D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F7CCCC72D3D2BA1006EFE35 /* Debug */,
@@ -563,7 +563,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F7CCCC92D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "LgnAssesment-Swift-UIKit-ConverterUITests" */ = {
+		9F7CCCC92D3D2BA1006EFE35 /* Build configuration list for PBXNativeTarget "iOS_UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F7CCCCA2D3D2BA1006EFE35 /* Debug */,
