@@ -1,5 +1,5 @@
 //
-//  KeyBoardViewController.swift
+//  KeysBoardViewController.swift
 //  iOS
 //
 //  Created by Oleh Poremskyy on 19.01.2025.
@@ -12,7 +12,7 @@ class KeysBoardViewController: UIViewController {
     var textField = UITextField()
 
     override func loadView() {
-        self.view = NumericKeyboard(target: textField)
+        self.view = NumericKeysboard(target: textField)
     }
 
     override func viewDidLoad() {

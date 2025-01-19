@@ -230,7 +230,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MainViewController: KeyBoardProtocol {
+extension MainViewController: KeysBoardProtocol {
     
     // TODO:
     func digitButtonTap(_ button: DigitButton) {

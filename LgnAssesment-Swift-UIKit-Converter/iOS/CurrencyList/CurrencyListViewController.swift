@@ -7,9 +7,6 @@
 
 import UIKit
 
-
-import UIKit
-
 class CurrencyListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var tableView: UITableView = UITableView()
