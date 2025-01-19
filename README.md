@@ -1,2 +1,2 @@
 # LgnAssesment-Swift-UIKit-Converter
-currency converter as as demo app
+currency converter as a demo app
