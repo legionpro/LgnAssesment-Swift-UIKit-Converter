@@ -5,21 +5,37 @@
 //  Created by Oleh Poremskyy on 19.01.2025.
 //
 
-import Foundation
+import UIKit
 
 struct Constants {
+    static let color1 = UIColorFromRGB(rgbValue: 0x025951)
+    static let color2 = UIColorFromRGB(rgbValue: 0x088c42)
+    static let color3 = UIColorFromRGB(rgbValue: 0x0d6e37)
+    static let color4 = UIColorFromRGB(rgbValue: 0xd4d9ad)
+    static let color5 = UIColorFromRGB(rgbValue: 0x733f2c)
     static let maxFavoriteCurrencyNumber = 4
     
     struct FavoriteCurrencyTableView {
         static let cellHeight: CGFloat = 60.0
         static let flagImageHeight: CGFloat = 100.0
         static let flagImageWidth: CGFloat = 100.0
+        static let flagFontSize: CGFloat = 80.0
         static let cellLinesImageWidth: CGFloat = 20.0
         static let contentMargin: CGFloat = 8.0
-        static let primaryDefaultValue = "100.00"
-        static let defaultValue = "0.00"
+        static let primaryDefaultValue = "100"
+        static let defaultValue = "0"
         static let codeFontSize: CGFloat = 21.0
         static let valueFontSize: CGFloat = 36.0
+        static let textColor: UIColor = .black
     }
-
+    
+    
+    static func UIColorFromRGB(rgbValue: UInt) -> UIColor {
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
 }
