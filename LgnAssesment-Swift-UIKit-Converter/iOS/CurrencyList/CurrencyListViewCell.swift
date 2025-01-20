@@ -48,6 +48,9 @@ final class CurrencyListViewCell: CurrencyViewCell {
         } else {
             favoriteImage.image = UIImage(systemName: "star")
         }
+        if !showFavoriteFlag {
+            favoriteImage.removeFromSuperview()
+        }
         self.setNeedsLayout()
         self.layoutIfNeeded()
     }
@@ -118,7 +121,10 @@ extension CurrencyListViewCell {
                 constant: Constants.CurrencyListViewCell.contentMargin),
             currencyName.trailingAnchor.constraint(
                 equalTo: favoriteImage.leadingAnchor,
-                constant: -1 * Constants.CurrencyListViewCell.contentMargin),
+                constant: -1 * Constants.CurrencyListViewCell.contentMargin).withPriority(100),
+            currencyName.trailingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: -1 * Constants.CurrencyListViewCell.contentMargin).withPriority(500),
         ]
         NSLayoutConstraint.activate(constraints)
     }

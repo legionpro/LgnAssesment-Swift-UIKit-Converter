@@ -10,6 +10,7 @@ import UIKit
 class CurrencyViewCell: UITableViewCell {
 
     var lastCellFlag: Bool = false
+    var showFavoriteFlag: Bool = true
 
     var currency: CurrencyInfo? {
         didSet {

@@ -8,5 +8,7 @@
 import Foundation
 
 protocol FavoriteCurrencyProtocol: AnyObject {
+    
+    var primaryCurrencySelectionFlag: Bool { get set }
     func addCurrencyAsFavorite(currency: CurrencyInfo)
 }

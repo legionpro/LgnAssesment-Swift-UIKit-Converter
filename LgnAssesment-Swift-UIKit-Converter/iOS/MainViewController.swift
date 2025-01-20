@@ -6,15 +6,26 @@
 //
 
 import UIKit
+import Combine
 
-class MainViewController: UIViewController {
-
-    @IBOutlet weak var textField: UITextField!
-
+class MainViewController: UIViewController, FavoriteCurrencyProtocol {
+    
+    private var box = Set<AnyCancellable>()
     private let childKeyBoard = KeyBoardViewController()
-    private let model = CurrencyListViewModel()
+    private var model: CurrencyListViewModelProtocol
     private let favoriteCellReuseIdentifier = "favoritecell"
 
+    init(model: CurrencyListViewModelProtocol) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var primaryCurrencySelectionFlag = false
+    
     lazy private var keyboardSlideView: ItemSlideView = {
         var view = ItemSlideView()
         add(childViewController: childKeyBoard, to: view)
@@ -23,7 +34,7 @@ class MainViewController: UIViewController {
 
     lazy private var currencySlideView: ItemSlideView = {
         var view = ItemSlideView()
-        let childController = CurrencyListViewController(model: self.model)
+        let childController = CurrencyListViewController(model: self.model as! CurrencyListViewModel)
         add(childViewController: childController, to: view)
         return view
     }()
@@ -115,13 +126,15 @@ class MainViewController: UIViewController {
         setupScrollView()
         setupPageControl()
         setupFavoriteCurrencyTableView()
+        setUpBinding()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         layoutView()
+        favoriteCurrencyTableView.reloadData()
     }
-
+    
     func setupSlideScrollView() {
         func setupKeyboardSlide() {
             keyboardSlideView.frame = CGRect(
@@ -150,6 +163,10 @@ class MainViewController: UIViewController {
         setupKeyboardSlide()
         setupCurrencySlide()
         keyBoardCurrencyScrollView.layoutIfNeeded()
+    }
+    
+    func addCurrencyAsFavorite(currency: CurrencyInfo) {
+    
     }
 
 }
@@ -205,7 +222,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
         -> Int
     {
-        return model.dataModel.favoriteCurrencyList.count
+        return model.mainList.count
         //Constants.maxFavoriteCurrencyNumber
     }
 
@@ -222,10 +239,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.dequeueReusableCell(
                 withIdentifier: favoriteCellReuseIdentifier)
             as! FavoriteCurrencyViewCell
-        if model.dataModel.favoriteCurrencyList.count == (indexPath.row + 1) {
+        if model.mainList.count == (indexPath.row + 1) {
             cell.lastCellFlag = true
         }
-        cell.currency = model.dataModel.favoriteCurrencyList[indexPath.row]
+        cell.currency = model.mainList[indexPath.row]
         cell.backgroundColor = .clear
         return cell
     }
@@ -247,7 +264,49 @@ extension MainViewController: KeyBoardProtocol {
     func delimiterButtonTap() {
 
     }
-
 }
+
+extension MainViewController {
+    private func setUpBinding() {
+        bindList()
+        bindLastUpdated()
+        bindCurrentValue()
+        bindListPublisher()
+    }
+    
+    private func bindList() {
+        model.curencyListElementPublisher
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+                self!.favoriteCurrencyTableView.reloadData()
+            })
+            .store(in: &box)
+    }
+    
+    private func bindLastUpdated() {
+//        model.$lastUpdated
+//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+//                self!.favoriteCurrencyTableView.reloadData()
+//            })
+//            .store(in: &box)
+    }
+    
+    
+    private func bindCurrentValue() {
+//        model.$currentValue
+//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+//                self!.favoriteCurrencyTableView.reloadData()
+//            })
+//            .store(in: &box)
+    }
+    
+    private func bindListPublisher() {
+        model.currencyListPublisher
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+                self!.favoriteCurrencyTableView.reloadData()
+            })
+            .store(in: &box)
+    }
+}
+
 
 

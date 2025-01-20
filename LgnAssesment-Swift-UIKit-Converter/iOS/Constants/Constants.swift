@@ -13,7 +13,8 @@ struct Constants {
     static let color3 = UIColorFromRGB(rgbValue: 0x0d6e37)
     static let color4 = UIColorFromRGB(rgbValue: 0xd4d9ad)
     static let color5 = UIColorFromRGB(rgbValue: 0x733f2c)
-    static let keyBoardColor = UIColorFromRGB(rgbValue: 0x733f2c).withAlphaComponent(0.03)
+    static let keyBoardColor = color5.withAlphaComponent(0.03)
+    static let keyBoardColorisHighlighted = color5.withAlphaComponent(0.1)
     static let maxFavoriteCurrencyNumber = 4
     
     struct mainController {

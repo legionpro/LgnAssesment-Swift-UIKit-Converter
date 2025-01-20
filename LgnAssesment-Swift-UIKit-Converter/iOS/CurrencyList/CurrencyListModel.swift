@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Combine
 
-class CurrencyListModel {
-    var currencyList: [CurrencyInfo] = [
+struct CurrencyListModel: CurrencyListModelProtocol {
+    var primaryValue = "0"
+    
+    var mainCurrencyList: [CurrencyInfo] = [
         CurrencyInfo(code: "USD", symbol: "$", countryFlag: "🇺🇸", name: "US Dollar", isFavorite: true, isPrimary: true),
         CurrencyInfo(code: "EUR", symbol: "€", countryFlag: "🇪🇺", name: "Euro", isFavorite: true, isPrimary: false),
         CurrencyInfo(code: "GBP", symbol: "£", countryFlag: "🇬🇧", name: "British Pound", isFavorite: true, isPrimary: false),
@@ -18,50 +21,56 @@ class CurrencyListModel {
         CurrencyInfo(code: "INR", symbol: "₹", countryFlag: "🇮🇳", name: "Indian Rupee", isFavorite: false, isPrimary: false)
     ]
     
-    // just to get correct list of favorite currency
-    var favoriteCurrencyList: [CurrencyInfo] {
-        currencyListValidate()
-        return currencyList.filter({$0.isFavorite == true})
-    }
-    
     // just to validate the list
-    private func currencyListValidate() {
-        if  currencyList.filter({$0.isFavorite}).count > validMaxCountOfFavoriteCurrecyList() ||
-                currencyList.filter({$0.isFavorite}).count < 1 ||
-                currencyList.filter({$0.isPrimary}).count != 1 {
+    func mainCurrencyListValidate() {
+        if  mainCurrencyList.filter({$0.isFavorite}).count > validMaxCountOfFavoriteCurrecyList() ||
+                mainCurrencyList.filter({$0.isFavorite}).count < 1 ||
+                mainCurrencyList.filter({$0.isPrimary}).count != 1 {
             resetPrimaryFlag()
         }
     }
     
     // reset the list to  make data valid
     private func resetPrimaryFlag() {
-        for item in currencyList {
+        for item in mainCurrencyList {
             item.isPrimary = false
             item.isFavorite = false
         }
         
         // at the begining here is only two favorites currency
         for i in (0...1) {
-            currencyList[i].isFavorite = true
+            mainCurrencyList[i].isFavorite = true
         }
-        currencyList[0].isPrimary = true
+        mainCurrencyList[0].isPrimary = true
     }
     
     // TODO:
     // get flags from userdefaults
-    private func resetCurrencyListFlags() {
+    private func resetmainCurrencyListFlags() {
         
     }
     
     // TODO:
     // set flags to userdefaults
-    private func saveCurrencyListFlags() {
+    private func savemainCurrencyListFlags() {
         
     }
     
     // it will works when list of currency will be dinamic ( from server side )
-    func validMaxCountOfFavoriteCurrecyList() -> Int {
-        return currencyList.count <= Constants.maxFavoriteCurrencyNumber ? currencyList.count : Constants.maxFavoriteCurrencyNumber
+    private func validMaxCountOfFavoriteCurrecyList() -> Int {
+        return mainCurrencyList.count <= Constants.maxFavoriteCurrencyNumber ? mainCurrencyList.count : Constants.maxFavoriteCurrencyNumber
+    }
+    
+    // check if it is possible to add new favorite
+    private func checkNewFavoritePossible() -> Bool {
+        return validMaxCountOfFavoriteCurrecyList() < Constants.maxFavoriteCurrencyNumber ? true : false
+    }
+    
+    // get element to remove from favorites
+    //just to improve user experience
+    // it just helps not to ask user for the additonal operation
+    private func checkRemoveFavoritePossible() -> Int? {
+        return mainCurrencyList.firstIndex(where: {$0.isFavorite && !$0.isPrimary})
     }
 
 }

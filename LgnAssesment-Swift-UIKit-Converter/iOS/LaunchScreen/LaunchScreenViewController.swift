@@ -45,7 +45,8 @@ final class LaunchScreenViewController: UIViewController {
         self.view.addSubview(contentView)
         self.view.addSubview(animationView!)
         animationView!.play(completion: { (finished) in
-            let vc = MainViewController()
+            let model = CurrencyListViewModel(dataModel: CurrencyListModel())
+            let vc = MainViewController(model: model)
             self.navigationController?.setViewControllers([vc], animated: false)
         })
     }

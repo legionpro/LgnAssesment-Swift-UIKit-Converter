@@ -9,4 +9,13 @@ import UIKit
 
 class DigitButton: UIButton {
     var digit: Int = 0
+
+    override open var isHighlighted: Bool {
+        didSet {
+            backgroundColor =
+                isHighlighted
+                ? Constants.keyBoardColorisHighlighted : Constants.keyBoardColor
+        }
+    }
+
 }

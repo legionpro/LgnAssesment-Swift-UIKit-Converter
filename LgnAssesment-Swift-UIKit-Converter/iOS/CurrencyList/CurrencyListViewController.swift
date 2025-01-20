@@ -7,12 +7,12 @@
 
 import UIKit
 
-class CurrencyListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CurrencyListViewController: UIViewController {
 
     var tableView: UITableView = UITableView()
     let cellReuseIdentifier = "cell"
     weak var currencyDelegate: FavoriteCurrencyProtocol?
-    private var model: CurrencyListViewModel
+    private var model: CurrencyListViewModelProtocol
 
     init(model: CurrencyListViewModel) {
         self.model = model
@@ -46,7 +46,7 @@ class CurrencyListViewController: UIViewController, UITableViewDelegate, UITable
     }
 }
 
-extension CurrencyListViewController {
+extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath
@@ -57,14 +57,17 @@ extension CurrencyListViewController {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
         -> Int
     {
-        return model.dataModel.currencyList.count
+        return model.mainList.count
     }
 
-    private func tableView(
-        tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath
-    ) {
-        //currencyDelegate?.addCurrencyAsFavorite(currency: model.dataModel.currencyList[indexPath.row])
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if !model.mainList[indexPath.row].isPrimary {
+            model.changeFavorite(at: indexPath.row)
+            model.curencyListElementPublisher.send(indexPath.row)
+        }
+            
     }
+
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
         -> UITableViewCell
@@ -72,8 +75,14 @@ extension CurrencyListViewController {
         let cell: CurrencyListViewCell =
             tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
             as! CurrencyListViewCell
-        cell.currency = model.dataModel.currencyList[indexPath.row]
-        cell.backgroundColor = .clear
+        let item = model.mainList[indexPath.row]
+        cell.currency = item
+        //cell.showFavoriteFlag = false
+        if item.isPrimary {
+            cell.backgroundColor = Constants.keyBoardColorisHighlighted
+        } else {
+            cell.backgroundColor = .clear
+        }
         return cell
     }
 }
