@@ -31,6 +31,7 @@ class MainViewController: UIViewController {
     lazy var favoriteCurrencyTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         return tableView
     }()
 

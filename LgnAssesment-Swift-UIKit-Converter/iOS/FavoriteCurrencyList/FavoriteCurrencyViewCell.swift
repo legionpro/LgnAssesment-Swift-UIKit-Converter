@@ -160,7 +160,7 @@ extension FavoriteCurrencyViewCell {
         let constraints = [
             bottomSeparator.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
-                constant: 2 * Constants.FavoriteCurrencyTableView.contentMargin),
+                constant: 10 * Constants.FavoriteCurrencyTableView.contentMargin),
             bottomSeparator.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor),
             bottomSeparator.heightAnchor.constraint(equalToConstant: 1.0),
