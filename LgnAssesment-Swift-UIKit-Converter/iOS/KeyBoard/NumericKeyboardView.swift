@@ -1,5 +1,5 @@
 //
-//  NumericKeysboardView.swift
+//  NumericKeyboardView.swift
 //  iOS
 //
 //  Created by Oleh Poremskyy on 19.01.2025.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class NumericKeysboard: UIView {
+class NumericKeyboard: UIView {
     weak var target: (UIKeyInput & UITextInput)?
-    weak var keyBoardDelegate: KeysBoardProtocol?
+    weak var keyBoardDelegate: KeyBoardProtocol?
 
     var useDecimalSeparator: Bool = true
 
@@ -43,7 +43,7 @@ class NumericKeysboard: UIView {
         button.accessibilityTraits = [.keyboardKey]
         button.accessibilityLabel = "Delete"
         button.addTarget(
-            NumericKeysboard.self, action: #selector(deleteButtonAction(_:)),
+            NumericKeyboard.self, action: #selector(deleteButtonAction(_:)),
             for: .touchUpInside)
         return button
     }()
@@ -59,7 +59,7 @@ class NumericKeysboard: UIView {
         button.accessibilityTraits = [.keyboardKey]
         //button.accessibilityLabel = "Delete"
         button.addTarget(
-            NumericKeysboard.self, action: #selector(delimiterButtonAction(_:)),
+            NumericKeyboard.self, action: #selector(delimiterButtonAction(_:)),
             for: .touchUpInside)
         return button
     }()
@@ -78,7 +78,7 @@ class NumericKeysboard: UIView {
 
 // MARK: - Actions
 
-extension NumericKeysboard {
+extension NumericKeyboard {
 
     @objc func digitButtonAction(_ sender: DigitButton) {
         //insertText("\(sender.digit)")
@@ -97,7 +97,7 @@ extension NumericKeysboard {
 
 // MARK: - Private initial configuration methods
 
-extension NumericKeysboard {
+extension NumericKeyboard {
     fileprivate func configure() {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addButtons()

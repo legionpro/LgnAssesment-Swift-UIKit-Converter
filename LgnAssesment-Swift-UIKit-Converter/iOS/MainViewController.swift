@@ -11,7 +11,7 @@ class MainViewController: UIViewController {
 
     @IBOutlet weak var textField: UITextField!
 
-    private let childKeyBoard = KeysBoardViewController()
+    private let childKeyBoard = KeyBoardViewController()
     private let model = CurrencyListViewModel()
     private let favoriteCellReuseIdentifier = "favoritecell"
 
@@ -230,7 +230,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MainViewController: KeysBoardProtocol {
+extension MainViewController: KeyBoardProtocol {
     
     // TODO:
     func digitButtonTap(_ button: DigitButton) {
