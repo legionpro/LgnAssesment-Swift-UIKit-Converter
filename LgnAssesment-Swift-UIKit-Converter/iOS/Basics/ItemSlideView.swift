@@ -20,7 +20,7 @@ class ItemSlideView: UIView {
 
     private func setViews() {
         //self.addSubview(imageView)
-        self.backgroundColor = UIColor.green
+        self.backgroundColor = UIColor.clear
     }
 
     private func layoutViews() {

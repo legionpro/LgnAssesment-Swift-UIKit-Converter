@@ -10,6 +10,7 @@ import UIKit
 class NumericKeyboard: UIView {
     weak var target: (UIKeyInput & UITextInput)?
     weak var keyBoardDelegate: KeyBoardProtocol?
+    private let generator = UIImpactFeedbackGenerator(style: .heavy)
 
     var useDecimalSeparator: Bool = true
 
@@ -20,6 +21,8 @@ class NumericKeyboard: UIView {
         button.titleLabel?.font = .preferredFont(forTextStyle: .title1)
         button.setTitleColor(.black, for: .normal)
         button.layer.borderWidth = 0.5
+        button.layer.cornerRadius = 5
+        button.backgroundColor = Constants.keyBoardColor
         button.sizeToFit()
         button.titleLabel?.numberOfLines = 1
         button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -32,35 +35,34 @@ class NumericKeyboard: UIView {
         return button
     }
 
-    var deleteButton: UIButton = {
+    lazy var deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("⌫", for: .normal)
+        button.setTitle("⌫/C", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .largeTitle)
-
-        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = Constants.keyBoardColor
+        button.setTitleColor(Constants.color5, for: .normal)
         button.layer.borderWidth = 0.5
+        button.layer.cornerRadius = 5
         button.layer.borderColor = UIColor.darkGray.cgColor
         button.accessibilityTraits = [.keyboardKey]
         button.accessibilityLabel = "Delete"
         button.addTarget(
-            NumericKeyboard.self, action: #selector(deleteButtonAction(_:)),
-            for: .touchUpInside)
+            self, action: #selector(deleteButtonAction(_:)), for: .touchUpInside)
         return button
     }()
 
-    var delimiterButton: UIButton = {
+    lazy var delimiterButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(",", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .largeTitle)
-
+        button.backgroundColor = Constants.keyBoardColor
         button.setTitleColor(.black, for: .normal)
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.darkGray.cgColor
         button.accessibilityTraits = [.keyboardKey]
-        //button.accessibilityLabel = "Delete"
+        button.accessibilityLabel = "Delimiter"
         button.addTarget(
-            NumericKeyboard.self, action: #selector(delimiterButtonAction(_:)),
-            for: .touchUpInside)
+            self, action: #selector(delimiterButtonAction(_:)), for: .touchUpInside)
         return button
     }()
 
@@ -68,6 +70,8 @@ class NumericKeyboard: UIView {
         self.target = target
         self.useDecimalSeparator = useDecimalSeparator
         super.init(frame: .zero)
+        generator.prepare()
+        generator.impactOccurred()
         configure()
     }
 
@@ -81,16 +85,17 @@ class NumericKeyboard: UIView {
 extension NumericKeyboard {
 
     @objc func digitButtonAction(_ sender: DigitButton) {
-        //insertText("\(sender.digit)")
+        generator.impactOccurred()
         keyBoardDelegate?.digitButtonTap(sender)
     }
     @objc func deleteButtonAction(_ sender: DigitButton) {
+        generator.impactOccurred()
         keyBoardDelegate?.deleteButtonTap()
 
     }
 
     @objc func delimiterButtonAction(_ sender: DigitButton) {
-        //target?.deleteBackward()
+        generator.impactOccurred()
         keyBoardDelegate?.delimiterButtonTap()
     }
 }
@@ -112,8 +117,8 @@ extension NumericKeyboard {
         for row in 0..<3 {
             let subStackView = createButtonsStackView(axis: .horizontal)
             stackView.addArrangedSubview(subStackView)
-
             for column in 0..<3 {
+                subStackView.spacing = 3.0
                 subStackView.addArrangedSubview(
                     numericButtons[row * 3 + column + 1])
             }
@@ -121,9 +126,8 @@ extension NumericKeyboard {
 
         let subStackView = createButtonsStackView(axis: .horizontal)
         stackView.addArrangedSubview(subStackView)
-
+        subStackView.addArrangedSubview(delimiterButton)
         subStackView.addArrangedSubview(numericButtons[0])
-
         subStackView.addArrangedSubview(deleteButton)
 
     }
@@ -134,7 +138,7 @@ extension NumericKeyboard {
         let stackView = UIStackView()
         stackView.axis = axis
         stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         return stackView
     }
 
