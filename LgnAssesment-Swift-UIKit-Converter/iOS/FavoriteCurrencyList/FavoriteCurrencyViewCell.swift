@@ -7,58 +7,72 @@
 
 import UIKit
 
-class FavoriteCurrencyViewCell: CurrencyViewCell {
+final class FavoriteCurrencyViewCell: CurrencyViewCell {
+
+    var multipl: CGFloat = 0
+    private var didLayoutSubviews = false
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .clear
-
+        setupCellSubviews()
+        createLayoutCellSubviews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setupCellSubviews() {
+    func setupCellSubviews() {
         setupLinesImage()
         setupFlagImage()
         setupCurrencyCode()
         setupCurrencyAmount()
         setupBottomSeparator()
     }
-    override func layoutCellSubviews() {
-        layoutLlinesImage()
-        layoutFlagImage()
-        layoutCurrencyCode()
-        layoutCurrencyAmount()
-        layoutBottomSeparator()
+    func createLayoutCellSubviews() {
+        createLayoutLlinesImage()
+        createLayoutFlagImage()
+        createLayoutCurrencyCode()
+        createLayoutCurrencyAmount()
+        createLayoutBottomSeparator()
     }
-    override func setUpCellData() {
-        contentView.backgroundColor = .clear
-        guard let currency = self.currency else { return }
+    func setUpCellData(_ currency: CurrencyInfo) {
+        self.currency = currency
+        linesImage.image = self.crossImage
         if !currency.isPrimary {
+            multipl = 0
             if lastCellFlag {
-                linesImage.image = UIImage(named: "corner.png")
-            } else {
-                linesImage.image = UIImage(named: "cross.png")
+                linesImage.image = self.cornerImage
             }
+            linesImage.isHidden = false
             linesImage.tintColor = Constants.color5
             currencyAmount.alpha = 0.5
             currencyFlagLabel.font = UIFont.boldSystemFont(
                 ofSize: Constants.FavoriteCurrencyTableView.flagFontSize - 10)
         } else {
+            multipl =
+                -1
+                * Constants.FavoriteCurrencyTableView
+                .cellLinesImageWidth
             currencyFlagLabel.font = UIFont.boldSystemFont(
                 ofSize: Constants.FavoriteCurrencyTableView.flagFontSize)
             currencyAmount.alpha = 1.0
-            linesImage.removeFromSuperview()
         }
         currencyFlagLabel.text = currency.countryFlag
         currencyCode.text = currency.code
         value = ""
-
         self.setNeedsLayout()
         self.layoutIfNeeded()
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        NSLayoutConstraint.deactivate(linesImageConstraints)
+        createLayoutLlinesImage()
+        activateLayoutConstraints()
+
+    }
+
 }
 
 extension FavoriteCurrencyViewCell {
@@ -83,11 +97,12 @@ extension FavoriteCurrencyViewCell {
         contentView.addSubview(currencyCode)
     }
 
-    private func layoutLlinesImage() {
+    private func createLayoutLlinesImage() {
         linesImage.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+
+        linesImageConstraints = [
             linesImage.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor, constant: 0),
+                equalTo: contentView.leadingAnchor, constant: multipl),
             linesImage.topAnchor.constraint(
                 equalTo: contentView.topAnchor, constant: 0),
             linesImage.bottomAnchor.constraint(
@@ -96,14 +111,13 @@ extension FavoriteCurrencyViewCell {
                 equalToConstant: Constants.FavoriteCurrencyTableView
                     .cellLinesImageWidth),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutFlagImage() {
+    private func createLayoutFlagImage() {
         currencyFlagLabel.font = UIFont.boldSystemFont(
             ofSize: Constants.FavoriteCurrencyTableView.flagFontSize)
         currencyFlagLabel.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyFlagLabelConstraints = [
             currencyFlagLabel.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyFlagLabel.widthAnchor.constraint(
@@ -119,29 +133,27 @@ extension FavoriteCurrencyViewCell {
                 equalTo: linesImage.trailingAnchor, constant: -5
             ).withPriority(1000),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutCurrencyCode() {
+    private func createLayoutCurrencyCode() {
         currencyCode.textColor = Constants.FavoriteCurrencyTableView.textColor
         currencyCode.font = UIFont.boldSystemFont(
             ofSize: Constants.FavoriteCurrencyTableView.codeFontSize)
         currencyCode.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyCodeConstraints = [
             currencyCode.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyCode.leadingAnchor.constraint(
                 equalTo: currencyFlagLabel.trailingAnchor, constant: -8),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutCurrencyAmount() {
+    private func createLayoutCurrencyAmount() {
         currencyAmount.textColor = Constants.FavoriteCurrencyTableView.textColor
         currencyAmount.font = UIFont.boldSystemFont(
             ofSize: Constants.FavoriteCurrencyTableView.valueFontSize)
         currencyAmount.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyAmountConstraints = [
             currencyAmount.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyAmount.leadingAnchor.constraint(
@@ -152,22 +164,29 @@ extension FavoriteCurrencyViewCell {
                 constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin
             ),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutBottomSeparator() {
+    private func createLayoutBottomSeparator() {
         bottomSeparator.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        bottomSeparatorConstraints = [
             bottomSeparator.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
-                constant: 10 * Constants.FavoriteCurrencyTableView.contentMargin),
+                constant: 10 * Constants.FavoriteCurrencyTableView.contentMargin
+            ),
             bottomSeparator.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor),
             bottomSeparator.heightAnchor.constraint(equalToConstant: 1.0),
             bottomSeparator.bottomAnchor.constraint(
                 equalTo: contentView.bottomAnchor),
         ]
-        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func activateLayoutConstraints() {
+        NSLayoutConstraint.activate(currencyCodeConstraints)
+        NSLayoutConstraint.activate(currencyAmountConstraints)
+        NSLayoutConstraint.activate(bottomSeparatorConstraints)
+        NSLayoutConstraint.activate(currencyFlagLabelConstraints)
+        NSLayoutConstraint.activate(linesImageConstraints)
     }
 
 }

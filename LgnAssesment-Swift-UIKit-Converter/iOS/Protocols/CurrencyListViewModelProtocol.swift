@@ -16,7 +16,7 @@ protocol CurrencyListViewModelProtocol {
     var mainList: [CurrencyInfo] { get }
     var favoriteCurrencyList: [CurrencyInfo] { get }
     var curencyListElementPublisher: PassthroughSubject<Int, Never>  { get }
-    var currencyListPublisher: AnyPublisher<CurrencyInfo,Never>  { get }
+    //var currencyListPublisher: AnyPublisher<CurrencyInfo,Never>  { get }
 
-    func changeFavorite(at index: Int)
+    func toggleFavorite(at index: Int)
 }

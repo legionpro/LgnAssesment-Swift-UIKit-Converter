@@ -9,16 +9,21 @@ import UIKit
 
 class CurrencyViewCell: UITableViewCell {
 
+    let crossImage = UIImage(named: "cross.png")!
+    let cornerImage = UIImage(named: "corner.png")!
+    
     var lastCellFlag: Bool = false
     var showFavoriteFlag: Bool = true
+    
+    var currency: CurrencyInfo?
 
-    var currency: CurrencyInfo? {
-        didSet {
-            if currency != nil {
-                setUpCellData()
-            }
-        }
-    }
+    internal var linesImageConstraints: [NSLayoutConstraint] = []
+    internal var currencyFlagLabelConstraints: [NSLayoutConstraint] = []
+    internal var currencyCodeConstraints: [NSLayoutConstraint] = []
+    internal var currencyAmountConstraints: [NSLayoutConstraint] = []
+    internal var bottomSeparatorConstraints: [NSLayoutConstraint] = []
+    internal var currencyNameConstraints: [NSLayoutConstraint] = []
+    internal var favoriteImageConstraints: [NSLayoutConstraint] = []
 
     var value: String {
         get {
@@ -85,7 +90,7 @@ class CurrencyViewCell: UITableViewCell {
         return view
     }()
 
-    var currencyAmount: UILabel = {
+    lazy var currencyAmount: UILabel = {
         let lbl = UILabel()
         lbl.backgroundColor = .clear
         lbl.textColor = .black
@@ -105,16 +110,10 @@ class CurrencyViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.value = ""
-        setupCellSubviews()
-        layoutCellSubviews()
-        setUpCellData()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    func setupCellSubviews() {}
-    func layoutCellSubviews() {}
-    func setUpCellData() {}
+    
 }

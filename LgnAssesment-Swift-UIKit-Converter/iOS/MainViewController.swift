@@ -97,7 +97,6 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
                 equalToConstant: view.frame.height / 2),
         ]
         NSLayoutConstraint.activate(constraints)
-
     }
 
     private func layoutPageControl() {
@@ -168,7 +167,6 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
     func addCurrencyAsFavorite(currency: CurrencyInfo) {
     
     }
-
 }
 
 extension MainViewController: UIScrollViewDelegate {
@@ -184,7 +182,6 @@ extension MainViewController: UIScrollViewDelegate {
     ) {
         setupSlideScrollView()
     }
-
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
@@ -222,14 +219,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
         -> Int
     {
-        return model.mainList.count
-        //Constants.maxFavoriteCurrencyNumber
+        return model.favoriteCurrencyList.count
     }
 
     private func tableView(
         tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath
     ) {
-        //favoriteCurrencyDelegate?.addCurrencyAsFavorite(currency: model.dataModel.currencyList[indexPath.row])
+
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -239,10 +235,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.dequeueReusableCell(
                 withIdentifier: favoriteCellReuseIdentifier)
             as! FavoriteCurrencyViewCell
-        if model.mainList.count == (indexPath.row + 1) {
+        let item = model.favoriteCurrencyList[indexPath.row]
+        cell.setUpCellData(item)
+        if model.favoriteCurrencyList.count == (indexPath.row + 1) {
             cell.lastCellFlag = true
+        } else {
+            cell.lastCellFlag = false
         }
-        cell.currency = model.mainList[indexPath.row]
         cell.backgroundColor = .clear
         return cell
     }
@@ -275,11 +274,11 @@ extension MainViewController {
     }
     
     private func bindList() {
-        model.curencyListElementPublisher
-            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-                self!.favoriteCurrencyTableView.reloadData()
-            })
-            .store(in: &box)
+//        model.curencyListElementPublisher
+//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+//                self!.favoriteCurrencyTableView.reloadData()
+//            })
+//            .store(in: &box)
     }
     
     private func bindLastUpdated() {
@@ -300,7 +299,7 @@ extension MainViewController {
     }
     
     private func bindListPublisher() {
-        model.currencyListPublisher
+        model.curencyListElementPublisher
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
                 self!.favoriteCurrencyTableView.reloadData()
             })

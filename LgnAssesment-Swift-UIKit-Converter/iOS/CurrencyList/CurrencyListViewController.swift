@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Combine
 
 class CurrencyListViewController: UIViewController {
 
+    private var box = Set<AnyCancellable>()
     var tableView: UITableView = UITableView()
     let cellReuseIdentifier = "cell"
     weak var currencyDelegate: FavoriteCurrencyProtocol?
@@ -26,6 +28,7 @@ class CurrencyListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCurrencyTableView()
+        setUpBinding()
         self.view.backgroundColor = Constants.color4
     }
 
@@ -46,6 +49,20 @@ class CurrencyListViewController: UIViewController {
     }
 }
 
+extension CurrencyListViewController {
+    private func setUpBinding() {
+        bindListPublisher()
+    }
+    
+    private func bindListPublisher() {
+        model.curencyListElementPublisher
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+                self!.tableView.reloadData()
+            })
+            .store(in: &box)
+    }
+}
+
 extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(
@@ -62,8 +79,7 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !model.mainList[indexPath.row].isPrimary {
-            model.changeFavorite(at: indexPath.row)
-            model.curencyListElementPublisher.send(indexPath.row)
+            model.toggleFavorite(at: indexPath.row)
         }
             
     }
@@ -76,8 +92,7 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
             tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
             as! CurrencyListViewCell
         let item = model.mainList[indexPath.row]
-        cell.currency = item
-        //cell.showFavoriteFlag = false
+        cell.setUpCellData(item)
         if item.isPrimary {
             cell.backgroundColor = Constants.keyBoardColorisHighlighted
         } else {

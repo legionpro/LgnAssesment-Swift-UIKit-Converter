@@ -12,4 +12,5 @@ protocol CurrencyListModelProtocol {
     var mainCurrencyList: [CurrencyInfo]  { get set }
     
     func mainCurrencyListValidate()
+    func toggleFavorite(at index: Int)
 }

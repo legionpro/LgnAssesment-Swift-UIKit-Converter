@@ -9,9 +9,10 @@ import Foundation
 import Combine
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
-//    @Published var currentValue = ""
-//    @Published var lastUpdated = Date()
+   
     internal var dataModel: CurrencyListModelProtocol
+    
+    var curencyListElementPublisher = PassthroughSubject<Int, Never>()
     
     init(dataModel: CurrencyListModelProtocol) {
         self.dataModel = dataModel
@@ -23,29 +24,11 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
     
     // just to get correct list of favorite currency
     var favoriteCurrencyList: [CurrencyInfo] {
-        dataModel.mainCurrencyListValidate()
-        return mainList.filter({$0.isFavorite == true})
+        return dataModel.mainCurrencyList.filter({$0.isFavorite})
     }
     
-    var curencyListElementPublisher = PassthroughSubject<Int, Never>()
-    
-    lazy var currencyListPublisher: AnyPublisher<CurrencyInfo,Never> = {
-        return mainList.publisher
-            .map{$0}
-            .eraseToAnyPublisher()
-    }()
-    
-//    lazy var currencyListPublisher: AnyPublisher<CurrencyInfo,Never> = {
-//    return dataModel.$currencyList
-////            .print("-----------------111111----")
-//            .map{$0}
-//            .eraseToAnyPublisher()
-//    }()
-    
-    
-    func changeFavorite(at index: Int) {
-        mainList[index].isFavorite.toggle()
-        
-        dataModel
+    func toggleFavorite(at index: Int) {
+        dataModel.toggleFavorite(at: index)
+        curencyListElementPublisher.send(index)
     }
 }

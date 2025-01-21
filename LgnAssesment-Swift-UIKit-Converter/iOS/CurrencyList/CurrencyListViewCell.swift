@@ -11,13 +11,15 @@ final class CurrencyListViewCell: CurrencyViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCellSubviews()
+        layoutCellSubviews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setupCellSubviews() {
+    func setupCellSubviews() {
         setupFlagImage()
         setupCurrencyCode()
         setupCurrencyName()
@@ -25,15 +27,36 @@ final class CurrencyListViewCell: CurrencyViewCell {
         setupBottomSeparator()
     }
 
-    override func layoutCellSubviews() {
-        layoutFlagImage()
-        layoutCurrencyCode()
-        layoutCurrencyName()
-        layoutFavoriteImage()
-        layoutBottomSeparator()
+    func layoutCellSubviews() {
+        createLayoutFlagImage()
+        createLayoutCurrencyCode()
+        createLayoutCurrencyName()
+        createLayoutFavoriteImage()
+        createLayoutBottomSeparator()
+    }
+    func setUpCellData(_ currency: CurrencyInfo) {
+        self.currency = currency
+        currencyCode.text = currency.code
+        currencyName.text = currency.name
+        currencyFlagLabel.text = currency.countryFlag
+        if currency.isPrimary {
+            favoriteImage.alpha = 0.7
+        } else {
+            favoriteImage.alpha = 0.5
+        }
+        if currency.isFavorite {
+            favoriteImage.image = UIImage(systemName: "star.fill")
+        } else {
+            favoriteImage.image = UIImage(systemName: "star")
+        }
+        if !showFavoriteFlag {
+            favoriteImage.removeFromSuperview()
+        }
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
     }
 
-    override func setUpCellData() {
+    func setUpCellData() {
         guard let currency = self.currency else { return }
         currencyCode.text = currency.code
         currencyName.text = currency.name
@@ -53,6 +76,11 @@ final class CurrencyListViewCell: CurrencyViewCell {
         }
         self.setNeedsLayout()
         self.layoutIfNeeded()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        activateLayoutConstraints()
     }
 }
 
@@ -78,11 +106,11 @@ extension CurrencyListViewCell {
         contentView.addSubview(favoriteImage)
     }
 
-    private func layoutFlagImage() {
+    private func createLayoutFlagImage() {
         currencyFlagLabel.font = UIFont.boldSystemFont(
             ofSize: Constants.CurrencyListViewCell.flagFontSize)
         currencyFlagLabel.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyFlagLabelConstraints = [
             currencyFlagLabel.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyFlagLabel.widthAnchor.constraint(
@@ -92,28 +120,26 @@ extension CurrencyListViewCell {
             currencyFlagLabel.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor, constant: Constants.CurrencyListViewCell.contentMargin),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutCurrencyCode() {
+    private func createLayoutCurrencyCode() {
         currencyName.font = UIFont.systemFont(
             ofSize: Constants.CurrencyListViewCell.codeFontSize)
         currencyCode.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyCodeConstraints = [
             currencyCode.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyCode.leadingAnchor.constraint(
                 equalTo: currencyFlagLabel.trailingAnchor,
                 constant: Constants.CurrencyListViewCell.contentMargin),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutCurrencyName() {
+    private func createLayoutCurrencyName() {
         currencyName.font = UIFont.systemFont(
             ofSize: Constants.CurrencyListViewCell.nameFontSize)
         currencyName.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        currencyNameConstraints = [
             currencyName.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             currencyName.leadingAnchor.constraint(
@@ -126,12 +152,11 @@ extension CurrencyListViewCell {
                 equalTo: contentView.leadingAnchor,
                 constant: -1 * Constants.CurrencyListViewCell.contentMargin).withPriority(500),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutFavoriteImage() {
+    private func createLayoutFavoriteImage() {
         favoriteImage.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        favoriteImageConstraints = [
             favoriteImage.centerYAnchor.constraint(
                 equalTo: contentView.centerYAnchor),
             favoriteImage.trailingAnchor.constraint(
@@ -145,9 +170,9 @@ extension CurrencyListViewCell {
         NSLayoutConstraint.activate(constraints)
     }
 
-    private func layoutBottomSeparator() {
+    private func createLayoutBottomSeparator() {
         bottomSeparator.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
+        bottomSeparatorConstraints = [
             bottomSeparator.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
                 constant: 2 * Constants.FavoriteCurrencyTableView.contentMargin),
@@ -159,5 +184,12 @@ extension CurrencyListViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-
+    
+    func activateLayoutConstraints() {
+        NSLayoutConstraint.activate(currencyFlagLabelConstraints)
+        NSLayoutConstraint.activate(currencyCodeConstraints)
+        NSLayoutConstraint.activate(currencyNameConstraints)
+        NSLayoutConstraint.activate(bottomSeparatorConstraints)
+        NSLayoutConstraint.activate(favoriteImageConstraints)
+    }
 }

@@ -58,19 +58,42 @@ struct CurrencyListModel: CurrencyListModelProtocol {
     
     // it will works when list of currency will be dinamic ( from server side )
     private func validMaxCountOfFavoriteCurrecyList() -> Int {
-        return mainCurrencyList.count <= Constants.maxFavoriteCurrencyNumber ? mainCurrencyList.count : Constants.maxFavoriteCurrencyNumber
+        let result = mainCurrencyList.count <= Constants.maxFavoriteCurrencyNumber ? mainCurrencyList.count : Constants.maxFavoriteCurrencyNumber
+        return result
     }
     
     // check if it is possible to add new favorite
-    private func checkNewFavoritePossible() -> Bool {
-        return validMaxCountOfFavoriteCurrecyList() < Constants.maxFavoriteCurrencyNumber ? true : false
+    private func checkAddNewFavoritePossible() -> Bool {
+        return validMaxCountOfFavoriteCurrecyList() <= mainCurrencyList.filter({$0.isFavorite}).count ? false : true
+    }
+    
+    // check if it is possible to add new favorite
+    private func checkIfRemovingFavoritePossible() -> Bool {
+        return mainCurrencyList.filter({$0.isFavorite}).count > 2
     }
     
     // get element to remove from favorites
     //just to improve user experience
     // it just helps not to ask user for the additonal operation
-    private func checkRemoveFavoritePossible() -> Int? {
+    private func getIndexToRemoFavorite() -> Int? {
         return mainCurrencyList.firstIndex(where: {$0.isFavorite && !$0.isPrimary})
     }
-
+    
+    // check is it possible and toggle favorite
+    func toggleFavorite(at index: Int) {
+        if !mainCurrencyList[index].isFavorite {
+            if !checkAddNewFavoritePossible() {
+                if let remove = getIndexToRemoFavorite() {
+                    mainCurrencyList[remove].isFavorite.toggle()
+                }
+            }
+            mainCurrencyList[index].isFavorite.toggle()
+        } else {
+            if checkIfRemovingFavoritePossible() {
+                mainCurrencyList[index].isFavorite.toggle()
+            }
+        }
+    }
 }
+
+
