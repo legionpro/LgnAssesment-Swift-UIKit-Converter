@@ -9,6 +9,8 @@ import UIKit
 
 final class CurrencyListViewCell: CurrencyViewCell {
 
+    var multipl: CGFloat = 0
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCellSubviews()
@@ -49,38 +51,21 @@ final class CurrencyListViewCell: CurrencyViewCell {
         } else {
             favoriteImage.image = UIImage(systemName: "star")
         }
-        if !showFavoriteFlag {
-            favoriteImage.removeFromSuperview()
+        if showFavoriteFlag {
+            multipl = Constants.CurrencyListViewCell.favoriteWidth
+        } else {
+            multipl = -1 * Constants.CurrencyListViewCell.contentMargin
         }
         self.setNeedsLayout()
         self.layoutIfNeeded()
     }
 
-    func setUpCellData() {
-        guard let currency = self.currency else { return }
-        currencyCode.text = currency.code
-        currencyName.text = currency.name
-        currencyFlagLabel.text = currency.countryFlag
-        if currency.isPrimary {
-            favoriteImage.alpha = 0.7
-        } else {
-            favoriteImage.alpha = 0.5
-        }
-        if currency.isFavorite {
-            favoriteImage.image = UIImage(systemName: "star.fill")
-        } else {
-            favoriteImage.image = UIImage(systemName: "star")
-        }
-        if !showFavoriteFlag {
-            favoriteImage.removeFromSuperview()
-        }
-        self.setNeedsLayout()
-        self.layoutIfNeeded()
-    }
-    
     override func layoutSubviews() {
         super.layoutSubviews()
+        NSLayoutConstraint.deactivate(favoriteImageConstraints)
+        createLayoutFavoriteImage()
         activateLayoutConstraints()
+
     }
 }
 
@@ -147,10 +132,7 @@ extension CurrencyListViewCell {
                 constant: Constants.CurrencyListViewCell.contentMargin),
             currencyName.trailingAnchor.constraint(
                 equalTo: favoriteImage.leadingAnchor,
-                constant: -1 * Constants.CurrencyListViewCell.contentMargin).withPriority(100),
-            currencyName.trailingAnchor.constraint(
-                equalTo: contentView.leadingAnchor,
-                constant: -1 * Constants.CurrencyListViewCell.contentMargin).withPriority(500),
+                constant: -1 * Constants.CurrencyListViewCell.contentMargin),
         ]
     }
 
@@ -161,13 +143,12 @@ extension CurrencyListViewCell {
                 equalTo: contentView.centerYAnchor),
             favoriteImage.trailingAnchor.constraint(
                 equalTo: contentView.trailingAnchor,
-                constant: -1 * Constants.CurrencyListViewCell.contentMargin),
+                constant: multipl),
             favoriteImage.widthAnchor.constraint(
                 equalToConstant: Constants.CurrencyListViewCell.favoriteWidth),
             favoriteImage.heightAnchor.constraint(
                 equalToConstant: Constants.CurrencyListViewCell.favoriteHeight),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
 
     private func createLayoutBottomSeparator() {
@@ -182,7 +163,6 @@ extension CurrencyListViewCell {
             bottomSeparator.bottomAnchor.constraint(
                 equalTo: contentView.bottomAnchor),
         ]
-        NSLayoutConstraint.activate(constraints)
     }
     
     func activateLayoutConstraints() {

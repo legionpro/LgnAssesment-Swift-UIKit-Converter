@@ -31,7 +31,26 @@ class CurrencyListViewController: UIViewController {
         setUpBinding()
         self.view.backgroundColor = Constants.color4
     }
-
+    
+//    override func  viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        print("------------------------0-00----------------------")
+//    }
+//    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        print("------------------------0-----------------------")
+//    }
+//
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        model.primaryCurrencySelectionFlag = false
+//        print("---------------------1--------------------------")
+//    }
+    func reloadCurrencyList() {
+        tableView.reloadData()
+    }
+    
     private func setupCurrencyTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -57,7 +76,7 @@ extension CurrencyListViewController {
     private func bindListPublisher() {
         model.curencyListElementPublisher
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-                self!.tableView.reloadData()
+                self!.reloadCurrencyList()
             })
             .store(in: &box)
     }
@@ -78,8 +97,14 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !model.mainList[indexPath.row].isPrimary {
-            model.toggleFavorite(at: indexPath.row)
+        if !model.primaryCurrencySelectionFlag {
+            if !model.mainList[indexPath.row].isPrimary {
+                model.toggleFavorite(at: indexPath.row)
+            }
+        } else {
+            if !model.mainList[indexPath.row].isPrimary {
+                model.setPrimary(at: indexPath.row)
+            }
         }
             
     }
@@ -92,6 +117,7 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
             tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
             as! CurrencyListViewCell
         let item = model.mainList[indexPath.row]
+        cell.showFavoriteFlag = model.primaryCurrencySelectionFlag
         cell.setUpCellData(item)
         if item.isPrimary {
             cell.backgroundColor = Constants.keyBoardColorisHighlighted

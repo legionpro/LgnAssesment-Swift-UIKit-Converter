@@ -10,6 +10,7 @@ import Combine
 
 struct CurrencyListModel: CurrencyListModelProtocol {
     var primaryValue = "0"
+    var primaryCurrencySelectionFlag = false
     
     var mainCurrencyList: [CurrencyInfo] = [
         CurrencyInfo(code: "USD", symbol: "$", countryFlag: "🇺🇸", name: "US Dollar", isFavorite: true, isPrimary: true),
@@ -79,6 +80,9 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         return mainCurrencyList.firstIndex(where: {$0.isFavorite && !$0.isPrimary})
     }
     
+    private func getIndexOfPrimary() -> Int? {
+        return mainCurrencyList.firstIndex(where: {$0.isPrimary})
+    }
     // check is it possible and toggle favorite
     func toggleFavorite(at index: Int) {
         if !mainCurrencyList[index].isFavorite {
@@ -94,6 +98,19 @@ struct CurrencyListModel: CurrencyListModelProtocol {
             }
         }
     }
+    
+    func setPrimary(at index: Int) {
+        guard let pindex = getIndexOfPrimary() else { return }
+        guard pindex != index else { return }
+        if !mainCurrencyList[index].isFavorite {
+            if !checkAddNewFavoritePossible() {
+                mainCurrencyList[pindex].isFavorite = false
+            }
+            mainCurrencyList[index].isFavorite = true
+        }
+        mainCurrencyList[pindex].isPrimary = false
+        mainCurrencyList[index].isPrimary = true
+     }
 }
 
 

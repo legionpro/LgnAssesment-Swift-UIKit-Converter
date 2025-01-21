@@ -127,11 +127,8 @@ extension FavoriteCurrencyViewCell {
                 equalToConstant: Constants.FavoriteCurrencyTableView
                     .flagImageHeight),
             currencyFlagLabel.leadingAnchor.constraint(
-                equalTo: contentView.leadingAnchor, constant: -5
-            ).withPriority(500),
-            currencyFlagLabel.leadingAnchor.constraint(
                 equalTo: linesImage.trailingAnchor, constant: -5
-            ).withPriority(1000),
+            )
         ]
     }
 

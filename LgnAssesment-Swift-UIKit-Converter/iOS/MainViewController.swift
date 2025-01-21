@@ -174,7 +174,6 @@ extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
-        //slides[pageControl.currentPage].imageView.loadAndSetup(url: slides[pageControl.currentPage].url ?? "")
     }
 
     override func traitCollectionDidChange(
@@ -222,10 +221,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return model.favoriteCurrencyList.count
     }
 
-    private func tableView(
-        tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath
-    ) {
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        model.primaryCurrencySelectionFlag = model.favoriteCurrencyList[indexPath.row].isPrimary
+        model.curencyListElementPublisher.send(-1)
+        keyBoardCurrencyScrollView.scrollToView(view: currencySlideView, animated: true)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
