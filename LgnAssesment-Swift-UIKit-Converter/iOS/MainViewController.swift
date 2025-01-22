@@ -11,13 +11,15 @@ import UIKit
 class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
     private var box = Set<AnyCancellable>()
-    private let childKeyBoard = KeyBoardViewController()
-    private var model: CurrencyListViewModelProtocol
+    private let childKeyBoard: KeyBoardViewControllerProtocol & UIViewController
+    private var model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol
     private let favoriteCellReuseIdentifier = "favoritecell"
 
-    init(model: CurrencyListViewModelProtocol) {
+    init(model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol, childKeyBoard: KeyBoardViewControllerProtocol & UIViewController) {
         self.model = model
+        self.childKeyBoard = childKeyBoard
         super.init(nibName: nil, bundle: nil)
+        self.childKeyBoard.setUpKeyBoadrDelegate(self)
     }
 
     required init?(coder: NSCoder) {
@@ -273,19 +275,20 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MainViewController: KeyBoardProtocol {
 
-    // TODO:
-    func digitButtonTap(_ button: DigitButton) {
-
+    func digitButtonTap(_ tag: BoardKeysTags) {
+        model.addSymbolToPrimaryValue(tag)
     }
 
-    // TODO:
-    func deleteButtonTap() {
-
-    }
-
-    // TODO:
     func delimiterButtonTap() {
+        model.addSymbolToPrimaryValue(.delimiter)
+    }
+    
+    func deleteButtonTap() {
+        model.cleanToPrimaryValue()
+    }
 
+    func clearButtonTap() {
+        model.cleanToPrimaryValue()
     }
 }
 

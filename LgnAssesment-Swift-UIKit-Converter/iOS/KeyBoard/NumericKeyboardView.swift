@@ -7,8 +7,10 @@
 
 import UIKit
 
+//enum BoardKeys
+
 class NumericKeyboard: UIView {
-    weak var target: (UIKeyInput & UITextInput)?
+    //weak var target: (UIKeyInput & UITextInput)?
     weak var keyBoardDelegate: KeyBoardProtocol?
     private let generator = UIImpactFeedbackGenerator(style: .heavy)
 
@@ -48,6 +50,8 @@ class NumericKeyboard: UIView {
         button.accessibilityLabel = "Delete"
         button.addTarget(
             self, action: #selector(deleteButtonAction(_:)), for: .touchUpInside)
+        button.addTarget(
+            self, action: #selector(clearButtonAction(_:)), for: .touchDownRepeat)
         return button
     }()
 
@@ -66,8 +70,7 @@ class NumericKeyboard: UIView {
         return button
     }()
 
-    init(target: UIKeyInput & UITextInput, useDecimalSeparator: Bool = false) {
-        self.target = target
+    init(useDecimalSeparator: Bool = false) {
         self.useDecimalSeparator = useDecimalSeparator
         super.init(frame: .zero)
         generator.prepare()
@@ -86,18 +89,26 @@ extension NumericKeyboard {
 
     @objc func digitButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
-        keyBoardDelegate?.digitButtonTap(sender)
+        guard let tag = BoardKeysTags(rawValue: "\(sender.digit)") else { return }
+        keyBoardDelegate?.digitButtonTap(tag)
     }
+    
+    @objc func delimiterButtonAction(_ sender: DigitButton) {
+        generator.impactOccurred()
+        keyBoardDelegate?.delimiterButtonTap()
+    }
+    
     @objc func deleteButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
         keyBoardDelegate?.deleteButtonTap()
 
     }
-
-    @objc func delimiterButtonAction(_ sender: DigitButton) {
+    @objc func clearButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
-        keyBoardDelegate?.delimiterButtonTap()
+        keyBoardDelegate?.clearButtonTap()
     }
+
+    
 }
 
 // MARK: - Private initial configuration methods

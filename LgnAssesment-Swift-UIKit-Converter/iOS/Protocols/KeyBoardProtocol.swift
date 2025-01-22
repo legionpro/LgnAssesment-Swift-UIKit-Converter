@@ -8,7 +8,8 @@
 import Foundation
 
 protocol KeyBoardProtocol: AnyObject {
-    func digitButtonTap(_ button: DigitButton)
+    func digitButtonTap(_ tag: BoardKeysTags)
     func deleteButtonTap()
+    func clearButtonTap()
     func delimiterButtonTap()
 }

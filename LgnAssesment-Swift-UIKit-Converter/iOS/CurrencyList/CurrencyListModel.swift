@@ -9,16 +9,17 @@ import Foundation
 import Combine
 
 struct CurrencyListModel: CurrencyListModelProtocol {
-    var primaryValue = "0"
+    //var primaryValue = "0"
     var primaryCurrencySelectionFlag = false
     
-    lazy var convertingValuesList: [ConvertingValuesInfo] = []
+    var convertingValues: ConvertingMethodsProtocol & ConvertingValuesProtocol
     
     var mainCurrencyList: [CurrencyInfo] {
         Constants.CountryCurrencyList
     }
     
-    init() {
+    init(convertingValues: ConvertingMethodsProtocol & ConvertingValuesProtocol) {
+        self.convertingValues = convertingValues
         resetValuesOnInit()
         resetValuesFromCurrentStateOfMainList()
     }
@@ -120,7 +121,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         var flag = true
         var newList: [ConvertingValuesInfo] = []
         mainCurrencyListValidate()
-        let list = convertingValuesList
+        let list = convertingValues.list
         let code = list.count > 0 ? list[0].code : "--=="
         let value = list.count > 0 ? list[0].value : Constants.FavoriteCurrencyTableView.primaryDefaultValue
         if let index = mainCurrencyList.firstIndex(where: {$0.isPrimary}), (code == mainCurrencyList[index].code) {
@@ -140,7 +141,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
             }
             newList.append(ConvertingValuesInfo(code: item.code, value: value))
         }
-        convertingValuesList = newList
+        convertingValues.list = newList
     }
 }
 
@@ -179,7 +180,7 @@ extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
     }
     
     mutating func setValuesToUserDefaults() {
-        let array = convertingValuesList        
+        let array = convertingValues.list
         do {
             let encoder = JSONEncoder()
             let data = try encoder.encode(array)

@@ -8,7 +8,8 @@
 import Foundation
 
 protocol CurrencyListModelProtocol {
-    var primaryValue: String { get set }
+    var convertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol { get }
+    //var primaryValue: String { get set }
     var mainCurrencyList: [CurrencyInfo]  { get }
     var primaryCurrencySelectionFlag: Bool { get set }
     func mainCurrencyListValidate()

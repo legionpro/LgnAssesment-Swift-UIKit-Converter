@@ -59,3 +59,23 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
     }
 
 }
+
+
+extension CurrencyListViewModel: ConvertingMethodsProtocol {
+
+        func addSymbolToPrimaryValue(_ tag: BoardKeysTags) {
+            dataModel.convertingValues.addSymbolToPrimaryValue(tag)
+        }
+    
+        func deleteSymbolFromToPrimaryValue() {
+            dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
+        }
+    
+        func cleanToPrimaryValue() {
+            dataModel.convertingValues.cleanToPrimaryValue()
+        }
+            
+        func setValueConvertedValue(code: String, value: String) {
+            dataModel.convertingValues.setValueConvertedValue(code: code, value: value)
+        }
+}
