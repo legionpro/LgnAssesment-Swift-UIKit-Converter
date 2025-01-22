@@ -13,10 +13,6 @@ struct CurrencyListModel: CurrencyListModelProtocol {
     var primaryCurrencySelectionFlag = false
     
     lazy var convertingValuesList: [ConvertingValuesInfo] = []
-//    {
-//        //resetValuesOnInit()
-//        //getValuesFromUserDefaults()
-//    }()
     
     var mainCurrencyList: [CurrencyInfo] {
         Constants.CountryCurrencyList
@@ -24,8 +20,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
     
     init() {
         resetValuesOnInit()
-        resetValuesCurrentStateOfMainList()
-        //mainCurrencyListValidate()
+        resetValuesFromCurrentStateOfMainList()
     }
     
     // just to validate the list
@@ -103,7 +98,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
                 mainCurrencyList[index].isFavorite.toggle()
             }
         }
-        resetValuesCurrentStateOfMainList()
+        resetValuesFromCurrentStateOfMainList()
     }
     
     mutating func setPrimary(at index: Int) {
@@ -117,11 +112,11 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         }
         mainCurrencyList[pindex].isPrimary = false
         mainCurrencyList[index].isPrimary = true
-        resetValuesCurrentStateOfMainList()
+        resetValuesFromCurrentStateOfMainList()
      }
     
     // reset values array according to new state of main currency list list
-    mutating func resetValuesCurrentStateOfMainList() {
+    mutating func resetValuesFromCurrentStateOfMainList() {
         var flag = true
         var newList: [ConvertingValuesInfo] = []
         mainCurrencyListValidate()
