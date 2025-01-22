@@ -9,5 +9,5 @@ import Foundation
 
 protocol FavoriteCurrencyProtocol: AnyObject {
     
-    func addCurrencyAsFavorite(currency: CurrencyInfo)
+    //func addCurrencyAsFavorite(currency: CurrencyInfo)
 }

@@ -31,22 +31,7 @@ class CurrencyListViewController: UIViewController {
         setUpBinding()
         self.view.backgroundColor = Constants.color4
     }
-    
-//    override func  viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        print("------------------------0-00----------------------")
-//    }
-//    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        print("------------------------0-----------------------")
-//    }
-//
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        model.primaryCurrencySelectionFlag = false
-//        print("---------------------1--------------------------")
-//    }
+
     func reloadCurrencyList() {
         tableView.reloadData()
     }

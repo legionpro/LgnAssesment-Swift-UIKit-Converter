@@ -5,11 +5,11 @@
 //  Created by Oleh Poremskyy on 19.01.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 class MainViewController: UIViewController, FavoriteCurrencyProtocol {
-    
+
     private var box = Set<AnyCancellable>()
     private let childKeyBoard = KeyBoardViewController()
     private var model: CurrencyListViewModelProtocol
@@ -19,13 +19,13 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         self.model = model
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     var primaryCurrencySelectionFlag = false
-    
+
     lazy private var keyboardSlideView: ItemSlideView = {
         var view = ItemSlideView()
         add(childViewController: childKeyBoard, to: view)
@@ -34,7 +34,8 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
     lazy private var currencySlideView: ItemSlideView = {
         var view = ItemSlideView()
-        let childController = CurrencyListViewController(model: self.model as! CurrencyListViewModel)
+        let childController = CurrencyListViewController(
+            model: self.model as! CurrencyListViewModel)
         add(childViewController: childController, to: view)
         return view
     }()
@@ -90,9 +91,11 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
             keyBoardCurrencyScrollView.bottomAnchor.constraint(
                 equalTo: view.bottomAnchor, constant: -1),
             keyBoardCurrencyScrollView.leftAnchor.constraint(
-                equalTo: view.leftAnchor, constant: Constants.mainController.contentMargines),
+                equalTo: view.leftAnchor,
+                constant: Constants.mainController.contentMargines),
             keyBoardCurrencyScrollView.rightAnchor.constraint(
-                equalTo: view.rightAnchor, constant: -1 * Constants.mainController.contentMargines),
+                equalTo: view.rightAnchor,
+                constant: -1 * Constants.mainController.contentMargines),
             keyBoardCurrencyScrollView.heightAnchor.constraint(
                 equalToConstant: view.frame.height / 2),
         ]
@@ -105,9 +108,11 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
                 equalTo: keyBoardCurrencyScrollView.topAnchor, constant: 0),
             pageControl.centerXAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            pageControl.heightAnchor.constraint(equalToConstant: Constants.mainController.pageControlHeight)
+            pageControl.heightAnchor.constraint(
+                equalToConstant: Constants.mainController.pageControlHeight),
         ]
-        pageControl.pageIndicatorTintColor = Constants.color5.withAlphaComponent(0.3)
+        pageControl.pageIndicatorTintColor = Constants.color5
+            .withAlphaComponent(0.3)
         pageControl.currentPageIndicatorTintColor = Constants.color5
         NSLayoutConstraint.activate(constraints)
     }
@@ -118,7 +123,9 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         self.navigationController?.navigationBar.barTintColor = Constants.color4
         self.navigationItem.title = "CONVERTER"
         self.navigationItem.titleView?.tintColor = Constants.color5
-        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: Constants.color5]
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: Constants.color5
+        ]
 
         self.view.backgroundColor = Constants.color4
         setupSubViews()
@@ -126,6 +133,14 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         setupPageControl()
         setupFavoriteCurrencyTableView()
         setUpBinding()
+
+        let _ = NotificationCenter.default.addObserver(
+            self, selector: #selector(appMovedToBackground),
+            name: UIApplication.willResignActiveNotification, object: nil)
+    }
+
+    @objc func appMovedToBackground() {
+        model.setDataToUserDefaults()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -133,11 +148,13 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         layoutView()
         favoriteCurrencyTableView.reloadData()
     }
-    
+
     func setupSlideScrollView() {
         func setupKeyboardSlide() {
             keyboardSlideView.frame = CGRect(
-                x: 0, y: 0, width: keyBoardCurrencyScrollView.frame.width - (2 * Constants.mainController.contentMargines),
+                x: 0, y: 0,
+                width: keyBoardCurrencyScrollView.frame.width
+                    - (2 * Constants.mainController.contentMargines),
                 height: view.frame.height / 3)
             keyboardSlideView.backgroundColor = .clear
             keyBoardCurrencyScrollView.addSubview(keyboardSlideView)
@@ -145,7 +162,9 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
         func setupCurrencySlide() {
             currencySlideView.frame = CGRect(
-                x: keyBoardCurrencyScrollView.frame.width - 16, y: 0, width: keyBoardCurrencyScrollView.frame.width - (2 * Constants.mainController.contentMargines),
+                x: keyBoardCurrencyScrollView.frame.width - 16, y: 0,
+                width: keyBoardCurrencyScrollView.frame.width
+                    - (2 * Constants.mainController.contentMargines),
                 height: view.frame.height / 2)
             currencySlideView.backgroundColor = .clear
             keyBoardCurrencyScrollView.addSubview(currencySlideView)
@@ -153,19 +172,17 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
         keyBoardCurrencyScrollView.frame = CGRect(
             x: 0, y: 0, width: view.frame.width, height: view.frame.height / 2)
-        
+
         keyBoardCurrencyScrollView.contentSize = CGSize(
-            width: view.frame.width * CGFloat(2) - 2 * (2 * Constants.mainController.contentMargines), height: view.frame.height / 2)
-        
+            width: view.frame.width * CGFloat(2) - 2
+                * (2 * Constants.mainController.contentMargines),
+            height: view.frame.height / 2)
+
         keyBoardCurrencyScrollView.isPagingEnabled = true
 
         setupKeyboardSlide()
         setupCurrencySlide()
         keyBoardCurrencyScrollView.layoutIfNeeded()
-    }
-    
-    func addCurrencyAsFavorite(currency: CurrencyInfo) {
-    
     }
 }
 
@@ -200,11 +217,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
             favoriteCurrencyTableView.bottomAnchor.constraint(
                 equalTo: pageControl.topAnchor, constant: 0),
             favoriteCurrencyTableView.leftAnchor.constraint(
-                equalTo: view.leftAnchor, constant: Constants.FavoriteCurrencyTableView.contentMargin),
+                equalTo: view.leftAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin),
             favoriteCurrencyTableView.rightAnchor.constraint(
-                equalTo: view.rightAnchor, constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin),
+                equalTo: view.rightAnchor,
+                constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin
+            ),
             favoriteCurrencyTableView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Constants.FavoriteCurrencyTableView.contentMargin),
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -221,11 +242,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return model.favoriteCurrencyList.count
     }
 
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        model.primaryCurrencySelectionFlag = model.favoriteCurrencyList[indexPath.row].isPrimary
+    func tableView(
+        _ tableView: UITableView, didSelectRowAt indexPath: IndexPath
+    ) {
+        model.primaryCurrencySelectionFlag =
+            model.favoriteCurrencyList[indexPath.row].isPrimary
         model.curencyListElementPublisher.send(-1)
-        keyBoardCurrencyScrollView.scrollToView(view: currencySlideView, animated: true)
+        keyBoardCurrencyScrollView.scrollToView(
+            view: currencySlideView, animated: true)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -248,7 +272,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MainViewController: KeyBoardProtocol {
-    
+
     // TODO:
     func digitButtonTap(_ button: DigitButton) {
 
@@ -272,40 +296,39 @@ extension MainViewController {
         bindCurrentValue()
         bindListPublisher()
     }
-    
+
     private func bindList() {
-//        model.curencyListElementPublisher
-//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-//                self!.favoriteCurrencyTableView.reloadData()
-//            })
-//            .store(in: &box)
+        //        model.curencyListElementPublisher
+        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+        //                self!.favoriteCurrencyTableView.reloadData()
+        //            })
+        //            .store(in: &box)
     }
-    
+
     private func bindLastUpdated() {
-//        model.$lastUpdated
-//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-//                self!.favoriteCurrencyTableView.reloadData()
-//            })
-//            .store(in: &box)
+        //        model.$lastUpdated
+        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+        //                self!.favoriteCurrencyTableView.reloadData()
+        //            })
+        //            .store(in: &box)
     }
-    
-    
+
     private func bindCurrentValue() {
-//        model.$currentValue
-//            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-//                self!.favoriteCurrencyTableView.reloadData()
-//            })
-//            .store(in: &box)
+        //        model.$currentValue
+        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+        //                self!.favoriteCurrencyTableView.reloadData()
+        //            })
+        //            .store(in: &box)
     }
-    
+
     private func bindListPublisher() {
         model.curencyListElementPublisher
-            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-                self!.favoriteCurrencyTableView.reloadData()
-            })
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] value in
+                    self!.favoriteCurrencyTableView.reloadData()
+                }
+            )
             .store(in: &box)
     }
 }
-
-
-

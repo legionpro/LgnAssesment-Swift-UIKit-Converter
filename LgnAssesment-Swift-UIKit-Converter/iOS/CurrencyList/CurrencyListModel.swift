@@ -12,8 +12,20 @@ struct CurrencyListModel: CurrencyListModelProtocol {
     var primaryValue = "0"
     var primaryCurrencySelectionFlag = false
     
-    var mainCurrencyList : [CurrencyInfo] {
+    lazy var convertingValuesList: [ConvertingValuesInfo] = []
+//    {
+//        //resetValuesOnInit()
+//        //getValuesFromUserDefaults()
+//    }()
+    
+    var mainCurrencyList: [CurrencyInfo] {
         Constants.CountryCurrencyList
+    }
+    
+    init() {
+        resetValuesOnInit()
+        resetValuesCurrentStateOfMainList()
+        //mainCurrencyListValidate()
     }
     
     // just to validate the list
@@ -78,7 +90,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         return mainCurrencyList.firstIndex(where: {$0.isPrimary})
     }
     // check is it possible and toggle favorite
-    func toggleFavorite(at index: Int) {
+    mutating func toggleFavorite(at index: Int) {
         if !mainCurrencyList[index].isFavorite {
             if !checkAddNewFavoritePossible() {
                 if let remove = getIndexToRemoFavorite() {
@@ -91,9 +103,10 @@ struct CurrencyListModel: CurrencyListModelProtocol {
                 mainCurrencyList[index].isFavorite.toggle()
             }
         }
+        resetValuesCurrentStateOfMainList()
     }
     
-    func setPrimary(at index: Int) {
+    mutating func setPrimary(at index: Int) {
         guard let pindex = getIndexOfPrimary() else { return }
         guard pindex != index else { return }
         if !mainCurrencyList[index].isFavorite {
@@ -104,7 +117,83 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         }
         mainCurrencyList[pindex].isPrimary = false
         mainCurrencyList[index].isPrimary = true
+        resetValuesCurrentStateOfMainList()
      }
+    
+    // reset values array according to new state of main currency list list
+    mutating func resetValuesCurrentStateOfMainList() {
+        var flag = true
+        var newList: [ConvertingValuesInfo] = []
+        mainCurrencyListValidate()
+        let list = convertingValuesList
+        let code = list.count > 0 ? list[0].code : "--=="
+        let value = list.count > 0 ? list[0].value : Constants.FavoriteCurrencyTableView.primaryDefaultValue
+        if let index = mainCurrencyList.firstIndex(where: {$0.isPrimary}), (code == mainCurrencyList[index].code) {
+            newList.append(ConvertingValuesInfo(code: list[0].code, value: list[0].value))
+        } else {
+            if let ii = mainCurrencyList.firstIndex(where: {$0.isPrimary}) {
+                flag = false
+                newList.append(ConvertingValuesInfo(code: mainCurrencyList[ii].code, value: value))
+            }
+        }
+        for item in mainCurrencyList.filter({ $0.isFavorite == true && $0.isPrimary == false }) {
+            var value = Constants.FavoriteCurrencyTableView.defaultValue
+            if let index = list.firstIndex(where: { $0.code == item.code }) {
+                if flag {
+                    value = list[index].value
+                }
+            }
+            newList.append(ConvertingValuesInfo(code: item.code, value: value))
+        }
+        convertingValuesList = newList
+    }
+}
+
+
+// to work with the user Defaults
+extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
+    static var key: String { "CurrencyListModelPersistenceProtocol" }
+    
+    func getValuesFromUserDefaults() -> [ConvertingValuesInfo] {
+        let code0 = Constants.CountryCurrencyList[0].code
+        let code1 = Constants.CountryCurrencyList[1].code
+        var list: [ConvertingValuesInfo] = [ConvertingValuesInfo(code: code0, value: "100"), ConvertingValuesInfo(code: code1, value: "0")]
+        if let data = UserDefaults.standard.data(forKey: CurrencyListModel.key) {
+            do {
+                let decoder = JSONDecoder()
+                let objs = try decoder.decode( [ConvertingValuesInfo].self, from: data)
+                list = objs
+            } catch {
+                print("Unable to Decode Notes (\(error))")
+            }
+        }
+        return list
+    }
+    
+    mutating func resetValuesOnInit() {
+        let list = getValuesFromUserDefaults()
+        for (index, element) in list.enumerated() {
+            if let ii = mainCurrencyList.firstIndex(where: {$0.code == element.code}) {
+                mainCurrencyList[ii].isFavorite = true
+                if index == 0 {
+                    mainCurrencyList[ii].isPrimary = true
+                }
+            }
+        }
+ 
+    }
+    
+    mutating func setValuesToUserDefaults() {
+        let array = convertingValuesList        
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(array)
+            UserDefaults.standard.set(data, forKey: CurrencyListModel.key)
+            UserDefaults.standard.synchronize()
+        } catch {
+            print("Unable to Encode Array of Notes (\(error))")
+        }
+    }
 }
 
 

@@ -12,6 +12,6 @@ protocol CurrencyListModelProtocol {
     var mainCurrencyList: [CurrencyInfo]  { get }
     var primaryCurrencySelectionFlag: Bool { get set }
     func mainCurrencyListValidate()
-    func toggleFavorite(at index: Int)
-    func setPrimary(at index: Int)
+    mutating func toggleFavorite(at index: Int)
+    mutating func setPrimary(at index: Int)
 }

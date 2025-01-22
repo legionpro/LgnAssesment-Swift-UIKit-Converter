@@ -11,7 +11,7 @@ import Combine
 protocol CurrencyListViewModelProtocol {
     //var currentValue: Published<String> { get }
     //var lastUpdated: Date { get set}
-    var dataModel: CurrencyListModelProtocol  { get set }
+    var dataModel: CurrencyListModelProtocol  & CurrencyListModelPersistenceProtocol { get set }
     var primaryCurrencySelectionFlag: Bool  { get set }
     var mainList: [CurrencyInfo] { get }
     var favoriteCurrencyList: [CurrencyInfo] { get }
@@ -19,6 +19,7 @@ protocol CurrencyListViewModelProtocol {
     //var currencyListPublisher: AnyPublisher<CurrencyInfo,Never>  { get }
 
     func toggleFavorite(at index: Int)
-    func setPrimary(at index: Int) 
+    func setPrimary(at index: Int)
     
+    func setDataToUserDefaults()
 }

@@ -9,13 +9,14 @@ import Foundation
 import Combine
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
-   
-    internal var dataModel: CurrencyListModelProtocol
+
+    internal var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol
     
     var curencyListElementPublisher = PassthroughSubject<Int, Never>()
     
-    init(dataModel: CurrencyListModelProtocol) {
+    init(dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol) {
         self.dataModel = dataModel
+        //self.setDataToUserDefaults()
     }
     
     var mainList: [CurrencyInfo] {
@@ -52,4 +53,9 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
         dataModel.setPrimary(at: index)
         curencyListElementPublisher.send(index)
     }
+    
+    func setDataToUserDefaults() {
+        dataModel.setValuesToUserDefaults()
+    }
+
 }
