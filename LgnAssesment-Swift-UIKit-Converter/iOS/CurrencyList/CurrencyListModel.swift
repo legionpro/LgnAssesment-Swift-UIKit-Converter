@@ -12,15 +12,9 @@ struct CurrencyListModel: CurrencyListModelProtocol {
     var primaryValue = "0"
     var primaryCurrencySelectionFlag = false
     
-    var mainCurrencyList: [CurrencyInfo] = [
-        CurrencyInfo(code: "USD", symbol: "$", countryFlag: "🇺🇸", name: "US Dollar", isFavorite: true, isPrimary: true),
-        CurrencyInfo(code: "EUR", symbol: "€", countryFlag: "🇪🇺", name: "Euro", isFavorite: true, isPrimary: false),
-        CurrencyInfo(code: "GBP", symbol: "£", countryFlag: "🇬🇧", name: "British Pound", isFavorite: true, isPrimary: false),
-        CurrencyInfo(code: "NGN", symbol: "₦", countryFlag: "🇳🇬", name: "Nigerian Naira", isFavorite: false, isPrimary: false),
-        CurrencyInfo(code: "CAD", symbol: "C$", countryFlag: "🇨🇦", name: "Canadian Dollar", isFavorite: false, isPrimary: false),
-        CurrencyInfo(code: "JPY", symbol: "¥", countryFlag: "🇯🇵", name: "Japanese Yen", isFavorite: false, isPrimary: false),
-        CurrencyInfo(code: "INR", symbol: "₹", countryFlag: "🇮🇳", name: "Indian Rupee", isFavorite: false, isPrimary: false)
-    ]
+    var mainCurrencyList : [CurrencyInfo] {
+        Constants.CountryCurrencyList
+    }
     
     // just to validate the list
     func mainCurrencyListValidate() {

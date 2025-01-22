@@ -9,7 +9,7 @@ import Foundation
 
 protocol CurrencyListModelProtocol {
     var primaryValue: String { get set }
-    var mainCurrencyList: [CurrencyInfo]  { get set }
+    var mainCurrencyList: [CurrencyInfo]  { get }
     var primaryCurrencySelectionFlag: Bool { get set }
     func mainCurrencyListValidate()
     func toggleFavorite(at index: Int)
