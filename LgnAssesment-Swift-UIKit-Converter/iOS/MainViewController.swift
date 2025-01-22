@@ -284,7 +284,7 @@ extension MainViewController: KeyBoardProtocol {
     }
     
     func deleteButtonTap() {
-        model.cleanToPrimaryValue()
+        model.deleteSymbolFromToPrimaryValue()
     }
 
     func clearButtonTap() {
