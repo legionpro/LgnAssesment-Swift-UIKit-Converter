@@ -36,7 +36,7 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
         createLayoutCurrencyAmount()
         createLayoutBottomSeparator()
     }
-    func setUpCellData(_ currency: CurrencyInfo) {
+    func setUpCellData(currency: CurrencyInfo, value: String) {
         self.currency = currency
         linesImage.image = self.crossImage
         if !currency.isPrimary {
@@ -60,7 +60,7 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
         }
         currencyFlagLabel.text = currency.countryFlag
         currencyCode.text = currency.code
-        value = ""
+        self.value = value
         self.setNeedsLayout()
         self.layoutIfNeeded()
     }

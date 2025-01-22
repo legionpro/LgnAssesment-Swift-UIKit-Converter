@@ -262,7 +262,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 withIdentifier: favoriteCellReuseIdentifier)
             as! FavoriteCurrencyViewCell
         let item = model.favoriteCurrencyList[indexPath.row]
-        cell.setUpCellData(item)
+        cell.setUpCellData(currency: item,  value: model.getCurrencyValue(indexPath.row))
         if model.favoriteCurrencyList.count == (indexPath.row + 1) {
             cell.lastCellFlag = true
         } else {

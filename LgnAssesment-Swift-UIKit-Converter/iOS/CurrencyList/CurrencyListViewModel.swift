@@ -32,6 +32,10 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
         }
     }
     
+    func getCurrencyValue(_ index: Int) -> String {
+        return dataModel.convertingValues.getCurrencyValue(index)
+    }
+    
     // just to get correct list of favorite currency
     var favoriteCurrencyList: [CurrencyInfo] {
         dataModel.mainCurrencyListValidate()
@@ -65,14 +69,17 @@ extension CurrencyListViewModel: ConvertingMethodsProtocol {
 
         func addSymbolToPrimaryValue(_ tag: BoardKeysTags) {
             dataModel.convertingValues.addSymbolToPrimaryValue(tag)
+            curencyListElementPublisher.send(0)
         }
     
         func deleteSymbolFromToPrimaryValue() {
             dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
+            curencyListElementPublisher.send(0)
         }
     
         func cleanToPrimaryValue() {
             dataModel.convertingValues.cleanToPrimaryValue()
+            curencyListElementPublisher.send(0)
         }
             
         func setValueConvertedValue(code: String, value: String) {
