@@ -12,10 +12,10 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
     private var box = Set<AnyCancellable>()
     private let childKeyBoard: KeyBoardViewControllerProtocol & UIViewController
-    private var model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol
+    private var model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol & ValuesListDataMapperProtocol
     private let favoriteCellReuseIdentifier = "favoritecell"
 
-    init(model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol, childKeyBoard: KeyBoardViewControllerProtocol & UIViewController) {
+    init(model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol & ValuesListDataMapperProtocol, childKeyBoard: KeyBoardViewControllerProtocol & UIViewController) {
         self.model = model
         self.childKeyBoard = childKeyBoard
         super.init(nibName: nil, bundle: nil)
@@ -149,6 +149,7 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         super.viewDidAppear(animated)
         layoutView()
         favoriteCurrencyTableView.reloadData()
+        model.updateCurrencyValuesList()
     }
 
     func setupSlideScrollView() {
@@ -301,11 +302,11 @@ extension MainViewController {
     }
 
     private func bindList() {
-        //        model.curencyListElementPublisher
-        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-        //                self!.favoriteCurrencyTableView.reloadData()
-        //            })
-        //            .store(in: &box)
+                model.curencyListElementPublisher
+                    .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+                        self!.favoriteCurrencyTableView.reloadData()
+                    })
+                    .store(in: &box)
     }
 
     private func bindLastUpdated() {

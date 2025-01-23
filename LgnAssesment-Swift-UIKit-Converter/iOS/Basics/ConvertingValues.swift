@@ -29,6 +29,8 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol {
     }
         
     func setValueConvertedValue(code: String, value: String) {
+        guard let item = list.first(where: {$0.code == code}) else { return }
+        item.value = value
     }
     
     func getCurrencyValue(_ index: Int) -> String {

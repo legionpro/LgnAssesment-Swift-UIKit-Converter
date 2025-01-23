@@ -17,13 +17,13 @@ class CurrencyViewCell: UITableViewCell {
     
     var currency: CurrencyInfo?
 
-    internal var linesImageConstraints: [NSLayoutConstraint] = []
-    internal var currencyFlagLabelConstraints: [NSLayoutConstraint] = []
-    internal var currencyCodeConstraints: [NSLayoutConstraint] = []
-    internal var currencyAmountConstraints: [NSLayoutConstraint] = []
-    internal var bottomSeparatorConstraints: [NSLayoutConstraint] = []
-    internal var currencyNameConstraints: [NSLayoutConstraint] = []
-    internal var favoriteImageConstraints: [NSLayoutConstraint] = []
+    var linesImageConstraints: [NSLayoutConstraint] = []
+    var currencyFlagLabelConstraints: [NSLayoutConstraint] = []
+    var currencyCodeConstraints: [NSLayoutConstraint] = []
+    var currencyAmountConstraints: [NSLayoutConstraint] = []
+    var bottomSeparatorConstraints: [NSLayoutConstraint] = []
+    var currencyNameConstraints: [NSLayoutConstraint] = []
+    var favoriteImageConstraints: [NSLayoutConstraint] = []
 
     var value: String {
         get {

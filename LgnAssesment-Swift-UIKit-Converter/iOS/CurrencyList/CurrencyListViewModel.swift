@@ -10,13 +10,14 @@ import Combine
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
 
-    internal var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol
-    
+    var bag = Set<AnyCancellable>()
+    var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol
+    private let networkService: NetworkServiceProtocol
     var curencyListElementPublisher = PassthroughSubject<Int, Never>()
     
-    init(dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol) {
+    init(dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol, networkService: NetworkServiceProtocol) {
         self.dataModel = dataModel
-        //self.setDataToUserDefaults()
+        self.networkService = networkService
     }
     
     var mainList: [CurrencyInfo] {
@@ -85,4 +86,48 @@ extension CurrencyListViewModel: ConvertingMethodsProtocol {
         func setValueConvertedValue(code: String, value: String) {
             dataModel.convertingValues.setValueConvertedValue(code: code, value: value)
         }
+}
+
+
+extension CurrencyListViewModel : ValuesListDataMapperProtocol {
+    
+    func updateCurrencyValuesList() {
+        bag = Set<AnyCancellable>()
+        let from = dataModel.convertingValues.list[0].code
+        let value = dataModel.convertingValues.list[0].value
+        for item in dataModel.convertingValues.list {
+            if item.code != from {
+                resetValuesListItem(from: from, to: item.code, value: value)
+            }
+        }
+    }
+
+    func resetValuesListItem(from: String, to: String, value: String) {
+        let pub: AnyPublisher<RequestResponseValue, APIError> = self.networkService.request(
+            Endpoint.justGet(value: value, from: from, to: to),
+            headers: nil,
+            parameters: nil )
+        let _ = pub
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                  print("All the requests are done")
+                case .failure(let apiError):
+                  print("An API error caused a problem \(apiError)")
+                }
+            } receiveValue: { [self] result in
+                    if let value = self.itemResponseToItem(result) {
+                        self.dataModel.convertingValues.setValueConvertedValue(code: value.code, value: value.value)
+                        
+                        
+                        for item in self.dataModel.convertingValues.list {
+                            print("----------------------------\(item.code)   \(item.value)")
+                        }
+                        
+                        curencyListElementPublisher.send(0)
+                    }
+              }
+              .store(in: &bag)
+    }
 }
