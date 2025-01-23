@@ -16,6 +16,8 @@ struct Constants {
     static let keyBoardColor = color5.withAlphaComponent(0.03)
     static let keyBoardColorisHighlighted = color5.withAlphaComponent(0.1)
     static let maxFavoriteCurrencyNumber = 4
+    static let infinity = "\u{221E}"
+    static let delimiter = BoardKeysTags.delimiter
     
     struct mainController {
         static let contentMargines: CGFloat = 8
@@ -31,6 +33,8 @@ struct Constants {
         static let contentMargin: CGFloat = 8.0
         static let primaryDefaultValue = "100"
         static let defaultValue = "0"
+        static let primaryMaxChars = 10
+        static let favoriteMaxChars = 20
         static let codeFontSize: CGFloat = 21.0
         static let valueFontSize: CGFloat = 36.0
         static let textColor: UIColor = .black

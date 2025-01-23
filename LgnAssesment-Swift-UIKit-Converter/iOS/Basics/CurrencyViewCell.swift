@@ -33,15 +33,19 @@ class CurrencyViewCell: UITableViewCell {
         set {
             guard let currency = self.currency else { return }
             if currency.isPrimary {
-                currencyAmount.text =
+                    currencyAmount.text =
                     (newValue == ""
-                        ? Constants.FavoriteCurrencyTableView
-                            .primaryDefaultValue : newValue)
+                     ? Constants.FavoriteCurrencyTableView
+                        .primaryDefaultValue : newValue)
             } else {
-                currencyAmount.text =
+                if newValue.count <= Constants.FavoriteCurrencyTableView.favoriteMaxChars {
+                    currencyAmount.text =
                     (newValue == ""
-                        ? Constants.FavoriteCurrencyTableView.defaultValue
-                        : newValue)
+                     ? Constants.FavoriteCurrencyTableView.defaultValue
+                     : newValue)
+                } else {
+                    currencyAmount.text = Constants.infinity
+                }
             }
         }
     }
@@ -95,6 +99,7 @@ class CurrencyViewCell: UITableViewCell {
         lbl.backgroundColor = .clear
         lbl.textColor = .black
         lbl.textAlignment = .right
+        lbl.adjustsFontSizeToFitWidth = true
         return lbl
     }()
 

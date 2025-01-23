@@ -119,12 +119,6 @@ extension CurrencyListViewModel : ValuesListDataMapperProtocol {
             } receiveValue: { [self] result in
                     if let value = self.itemResponseToItem(result) {
                         self.dataModel.convertingValues.setValueConvertedValue(code: value.code, value: value.value)
-                        
-                        
-                        for item in self.dataModel.convertingValues.list {
-                            print("----------------------------\(item.code)   \(item.value)")
-                        }
-                        
                         curencyListElementPublisher.send(0)
                     }
               }

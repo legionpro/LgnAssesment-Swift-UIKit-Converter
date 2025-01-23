@@ -9,7 +9,7 @@ import UIKit
 
 
 extension String {
-
+    
     func textToImage() -> UIImage? {
         let nsString = (self as NSString)
         let font = UIFont.systemFont(ofSize: 1024)
@@ -25,5 +25,13 @@ extension String {
 
         return image ?? UIImage()
     }
+    
+    
+    func deleteLeadingZeros() -> String {
+      var resultStr = self
+      while resultStr.hasPrefix("0") && resultStr.count > 1 {
+       resultStr.removeFirst()
+      }
+      return resultStr
+    }
 }
-
