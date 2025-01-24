@@ -19,20 +19,6 @@ class ItemSlideView: UIView {
     }
 
     private func setViews() {
-        //self.addSubview(imageView)
         self.backgroundColor = UIColor.clear
-    }
-
-    private func layoutViews() {
-        layoutImageView()
-    }
-
-    private func layoutImageView() {
-        //        NSLayoutConstraint.activate([
-        //            imageView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 55),
-        //            imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        //            imageView.widthAnchor.constraint(equalToConstant: 260),
-        //            imageView.heightAnchor.constraint(equalToConstant: 260)
-        //        ])
     }
 }

@@ -11,10 +11,10 @@ class CurrencyViewCell: UITableViewCell {
 
     let crossImage = UIImage(named: "cross.png")!
     let cornerImage = UIImage(named: "corner.png")!
-    
+
     var lastCellFlag: Bool = false
     var showFavoriteFlag: Bool = true
-    
+
     var currency: CurrencyInfo?
 
     var linesImageConstraints: [NSLayoutConstraint] = []
@@ -24,6 +24,18 @@ class CurrencyViewCell: UITableViewCell {
     var bottomSeparatorConstraints: [NSLayoutConstraint] = []
     var currencyNameConstraints: [NSLayoutConstraint] = []
     var favoriteImageConstraints: [NSLayoutConstraint] = []
+    var messageLabelConstraints: [NSLayoutConstraint] = []
+
+    var failureMessageFlag: Bool = false {
+        didSet {
+            messageLabel.isHidden = true
+            if let currency = currency {
+                if currency.isPrimary {
+                    messageLabel.isHidden = !failureMessageFlag
+                }
+            }
+        }
+    }
 
     var value: String {
         get {
@@ -33,16 +45,18 @@ class CurrencyViewCell: UITableViewCell {
         set {
             guard let currency = self.currency else { return }
             if currency.isPrimary {
-                    currencyAmount.text =
+                currencyAmount.text =
                     (newValue == ""
-                     ? Constants.FavoriteCurrencyTableView
-                        .primaryDefaultValue : newValue)
+                        ? Constants.FavoriteCurrencyTableView
+                            .primaryDefaultValue : newValue)
             } else {
-                if newValue.count <= Constants.FavoriteCurrencyTableView.favoriteMaxChars {
+                if newValue.count
+                    <= Constants.FavoriteCurrencyTableView.favoriteMaxChars
+                {
                     currencyAmount.text =
-                    (newValue == ""
-                     ? Constants.FavoriteCurrencyTableView.defaultValue
-                     : newValue)
+                        (newValue == ""
+                            ? Constants.FavoriteCurrencyTableView.defaultValue
+                            : newValue)
                 } else {
                     currencyAmount.text = Constants.infinity
                 }
@@ -76,6 +90,18 @@ class CurrencyViewCell: UITableViewCell {
         lbl.backgroundColor = .clear
         lbl.textColor = .black
         lbl.textAlignment = .left
+        return lbl
+    }()
+
+    let messageLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.backgroundColor = .clear
+        lbl.textColor = Constants.warningColor
+        lbl.textAlignment = .center
+        lbl.isHidden = true
+        lbl.text = Constants.warningMessage
+        lbl.font = UIFont.systemFont(
+            ofSize: Constants.FavoriteCurrencyTableView.messageFontSize)
         return lbl
     }()
 
@@ -120,5 +146,5 @@ class CurrencyViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }

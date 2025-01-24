@@ -18,6 +18,10 @@ struct Constants {
     static let maxFavoriteCurrencyNumber = 4
     static let infinity = "\u{221E}"
     static let delimiter = BoardKeysTags.delimiter
+    static let warningColor = UIColor.red
+    static let okColor = UIColor.green
+    static let warningMessage = "the data was not updated"
+    static let okMessage = "updated: "
     
     struct mainController {
         static let contentMargines: CGFloat = 8
@@ -28,6 +32,7 @@ struct Constants {
         static let cellHeight: CGFloat = 60.0
         static let flagImageHeight: CGFloat = 100.0
         static let flagImageWidth: CGFloat = 100.0
+        static let messageFontSize: CGFloat = 8.0
         static let flagFontSize: CGFloat = 80.0
         static let cellLinesImageWidth: CGFloat = 20.0
         static let contentMargin: CGFloat = 8.0

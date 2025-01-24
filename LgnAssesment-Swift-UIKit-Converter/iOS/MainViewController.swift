@@ -142,7 +142,9 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
     }
 
     @objc func appMovedToBackground() {
-        model.setDataToUserDefaults()
+        if !self.model.failureFlag {
+            model.setDataToUserDefaults()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -263,12 +265,13 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 withIdentifier: favoriteCellReuseIdentifier)
             as! FavoriteCurrencyViewCell
         let item = model.favoriteCurrencyList[indexPath.row]
-        cell.setUpCellData(currency: item,  value: model.getCurrencyValue(index: indexPath.row))
+        cell.setUpCellData(currency: item,  value: model.getCurrencyValue(index: indexPath.row), failureFlag: model.failureFlag)
         if model.favoriteCurrencyList.count == (indexPath.row + 1) {
             cell.lastCellFlag = true
         } else {
             cell.lastCellFlag = false
         }
+        //cell.failureMessageFlag = model.failureFlag
         cell.backgroundColor = .clear
         return cell
     }
@@ -299,8 +302,19 @@ extension MainViewController {
         bindLastUpdated()
         bindCurrentValue()
         bindListPublisher()
+        bindPrimaryCurrencyValuePublisher()
     }
 
+    private func bindPrimaryCurrencyValuePublisher() {
+        model.primaryCurrencyValuePublisher
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
+                
+                // TOD:
+                print("------------------TOD SART RELOADING after chages value--------------------------------------")
+            })
+            .store(in: &box)
+    }
+    
     private func bindList() {
                 model.curencyListElementPublisher
                     .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in

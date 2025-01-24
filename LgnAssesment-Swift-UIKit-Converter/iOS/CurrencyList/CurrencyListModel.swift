@@ -8,10 +8,9 @@
 import Foundation
 import Combine
 
-struct CurrencyListModel: CurrencyListModelProtocol {
-    //var primaryValue = "0"
-    var primaryCurrencySelectionFlag = false
-    
+class CurrencyListModel: CurrencyListModelProtocol {
+
+    var primaryCurrencySelectionFlag = false    
     var convertingValues: ConvertingMethodsProtocol & ConvertingValuesProtocol
     
     var mainCurrencyList: [CurrencyInfo] {
@@ -86,7 +85,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         return mainCurrencyList.firstIndex(where: {$0.isPrimary})
     }
     // check is it possible and toggle favorite
-    mutating func toggleFavorite(at index: Int) {
+    func toggleFavorite(at index: Int) {
         if !mainCurrencyList[index].isFavorite {
             if !checkAddNewFavoritePossible() {
                 if let remove = getIndexToRemoFavorite() {
@@ -102,7 +101,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
         resetValuesFromCurrentStateOfMainList()
     }
     
-    mutating func setPrimary(at index: Int) {
+    func setPrimary(at index: Int) {
         guard let pindex = getIndexOfPrimary() else { return }
         guard pindex != index else { return }
         if !mainCurrencyList[index].isFavorite {
@@ -117,7 +116,7 @@ struct CurrencyListModel: CurrencyListModelProtocol {
      }
     
     // reset values array according to new state of main currency list list
-    mutating func resetValuesFromCurrentStateOfMainList() {
+    func resetValuesFromCurrentStateOfMainList() {
         var flag = true
         var newList: [ConvertingValuesInfo] = []
         mainCurrencyListValidate()
@@ -166,8 +165,9 @@ extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
         return list
     }
     
-    mutating func resetValuesOnInit() {
+    func resetValuesOnInit() {
         let list = getValuesFromUserDefaults()
+        convertingValues.list = list
         for (index, element) in list.enumerated() {
             if let ii = mainCurrencyList.firstIndex(where: {$0.code == element.code}) {
                 mainCurrencyList[ii].isFavorite = true
@@ -179,7 +179,7 @@ extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
  
     }
     
-    mutating func setValuesToUserDefaults() {
+    func setValuesToUserDefaults() {
         let array = convertingValues.list
         do {
             let encoder = JSONEncoder()

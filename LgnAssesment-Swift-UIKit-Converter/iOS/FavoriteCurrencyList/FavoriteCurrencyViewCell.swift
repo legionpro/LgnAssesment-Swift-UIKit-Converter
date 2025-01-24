@@ -10,8 +10,7 @@ import UIKit
 final class FavoriteCurrencyViewCell: CurrencyViewCell {
 
     var multipl: CGFloat = 0
-    private var didLayoutSubviews = false
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCellSubviews()
@@ -28,6 +27,8 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
         setupCurrencyCode()
         setupCurrencyAmount()
         setupBottomSeparator()
+        setupMessage()
+        
     }
     func createLayoutCellSubviews() {
         createLayoutLlinesImage()
@@ -35,11 +36,14 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
         createLayoutCurrencyCode()
         createLayoutCurrencyAmount()
         createLayoutBottomSeparator()
+        createLayoutMessage()
     }
-    func setUpCellData(currency: CurrencyInfo, value: String) {
+    func setUpCellData(currency: CurrencyInfo, value: String, failureFlag: Bool) {
         self.currency = currency
         linesImage.image = self.crossImage
+        self.failureMessageFlag = failureFlag
         if !currency.isPrimary {
+            self.value = failureFlag ? "" : value
             multipl = 0
             if lastCellFlag {
                 linesImage.image = self.cornerImage
@@ -57,10 +61,11 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
             currencyFlagLabel.font = UIFont.boldSystemFont(
                 ofSize: Constants.FavoriteCurrencyTableView.flagFontSize)
             currencyAmount.alpha = 1.0
+            self.value = value
         }
         currencyFlagLabel.text = currency.countryFlag
         currencyCode.text = currency.code
-        self.value = value
+
         self.setNeedsLayout()
         self.layoutIfNeeded()
     }
@@ -76,6 +81,10 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
 }
 
 extension FavoriteCurrencyViewCell {
+
+    private func setupMessage() {
+        contentView.addSubview(messageLabel)
+    }
 
     private func setupBottomSeparator() {
         contentView.addSubview(bottomSeparator)
@@ -178,12 +187,30 @@ extension FavoriteCurrencyViewCell {
         ]
     }
     
+    private func createLayoutMessage() {
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabelConstraints = [
+            messageLabel.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin
+            ),
+            messageLabel.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin),
+            messageLabel.heightAnchor.constraint(equalToConstant: 8.0),
+            messageLabel.bottomAnchor.constraint(
+                equalTo: bottomSeparator.topAnchor, constant: -3),
+        ]
+    }
+    
+
     func activateLayoutConstraints() {
         NSLayoutConstraint.activate(currencyCodeConstraints)
         NSLayoutConstraint.activate(currencyAmountConstraints)
         NSLayoutConstraint.activate(bottomSeparatorConstraints)
         NSLayoutConstraint.activate(currencyFlagLabelConstraints)
         NSLayoutConstraint.activate(linesImageConstraints)
+        NSLayoutConstraint.activate(messageLabelConstraints)
     }
 
 }

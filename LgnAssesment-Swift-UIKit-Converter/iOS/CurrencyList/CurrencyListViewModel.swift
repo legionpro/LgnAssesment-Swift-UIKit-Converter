@@ -10,11 +10,14 @@ import Combine
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol & CurrencyListDataModelProtocol , ObservableObject {
 
-    var bag = Set<AnyCancellable>()
+    private var bag = Set<AnyCancellable>()
+    var curencyListElementPublisher = PassthroughSubject<Int, Never>()
+    var primaryCurrencyValuePublisher = PassthroughSubject<String, Never>()
+    
+    var failureFlag = false
     var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol
     private let networkService: NetworkServiceProtocol
-    var curencyListElementPublisher = PassthroughSubject<Int, Never>()
-    
+
     init(dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol, networkService: NetworkServiceProtocol) {
         self.dataModel = dataModel
         self.networkService = networkService
@@ -64,19 +67,31 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol & CurrencyListDataMod
 
 extension CurrencyListViewModel: ConvertingMethodsProtocol {
 
-    func addSymbolToPrimaryValue(_ tag: BoardKeysTags) {
-        dataModel.convertingValues.addSymbolToPrimaryValue(tag)
+    func addSymbolToPrimaryValue(_ tag: BoardKeysTags) -> (Bool, String){
+        let result = dataModel.convertingValues.addSymbolToPrimaryValue(tag)
+        if result.0 {
+            primaryCurrencyValuePublisher.send(result.1)
+        }
         curencyListElementPublisher.send(0)
+        return result
     }
 
-    func deleteSymbolFromToPrimaryValue() {
-        dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
+    func deleteSymbolFromToPrimaryValue() -> (Bool, String) {
+        let result = dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
+        if result.0 {
+            primaryCurrencyValuePublisher.send(result.1)
+        }
         curencyListElementPublisher.send(0)
+        return result
     }
 
-    func cleanToPrimaryValue() {
-        dataModel.convertingValues.cleanToPrimaryValue()
+    func cleanToPrimaryValue() -> (Bool, String){
+        let result = dataModel.convertingValues.cleanToPrimaryValue()
+        if  result.0 {
+            primaryCurrencyValuePublisher.send(result.1)
+        }
         curencyListElementPublisher.send(0)
+        return result
     }
         
     func setValueConvertedValue(code: String, value: String) {
@@ -92,9 +107,6 @@ extension CurrencyListViewModel: ConvertingMethodsProtocol {
     }
     
 }
-
-
-
 
 extension CurrencyListViewModel : ValuesListDataMapperProtocol {
     
@@ -116,15 +128,18 @@ extension CurrencyListViewModel : ValuesListDataMapperProtocol {
             parameters: nil )
         let _ = pub
             .receive(on: DispatchQueue.main)
-            .sink { completion in
+            .sink { [self] completion in
                 switch completion {
                 case .finished:
                   print("All the requests are done")
                 case .failure(let apiError):
+                    self.failureFlag = true
+                    curencyListElementPublisher.send(0)
                   print("An API error caused a problem \(apiError)")
                 }
             } receiveValue: { [self] result in
                     if let value = self.itemResponseToItem(result) {
+                        self.failureFlag = false
                         self.dataModel.convertingValues.setValueConvertedValue(code: value.code, value: value.value)
                         curencyListElementPublisher.send(0)
                     }
