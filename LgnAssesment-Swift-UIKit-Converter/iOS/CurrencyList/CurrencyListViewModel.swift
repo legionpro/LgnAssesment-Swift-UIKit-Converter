@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
+class CurrencyListViewModel: CurrencyListViewModelProtocol & CurrencyListDataModelProtocol , ObservableObject {
 
     var bag = Set<AnyCancellable>()
     var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol
@@ -31,10 +31,6 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
         set {
             dataModel.primaryCurrencySelectionFlag = newValue
         }
-    }
-    
-    func getCurrencyValue(_ index: Int) -> String {
-        return dataModel.convertingValues.getCurrencyValue(index)
     }
     
     // just to get correct list of favorite currency
@@ -68,25 +64,36 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol, ObservableObject {
 
 extension CurrencyListViewModel: ConvertingMethodsProtocol {
 
-        func addSymbolToPrimaryValue(_ tag: BoardKeysTags) {
-            dataModel.convertingValues.addSymbolToPrimaryValue(tag)
-            curencyListElementPublisher.send(0)
-        }
+    func addSymbolToPrimaryValue(_ tag: BoardKeysTags) {
+        dataModel.convertingValues.addSymbolToPrimaryValue(tag)
+        curencyListElementPublisher.send(0)
+    }
+
+    func deleteSymbolFromToPrimaryValue() {
+        dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
+        curencyListElementPublisher.send(0)
+    }
+
+    func cleanToPrimaryValue() {
+        dataModel.convertingValues.cleanToPrimaryValue()
+        curencyListElementPublisher.send(0)
+    }
+        
+    func setValueConvertedValue(code: String, value: String) {
+        dataModel.convertingValues.setValueConvertedValue(code: code, value: value)
+    }
     
-        func deleteSymbolFromToPrimaryValue() {
-            dataModel.convertingValues.deleteSymbolFromToPrimaryValue()
-            curencyListElementPublisher.send(0)
-        }
+    func getCurrencyValue(index: Int) -> String {
+        return dataModel.convertingValues.getCurrencyValue(index: index)
+    }
     
-        func cleanToPrimaryValue() {
-            dataModel.convertingValues.cleanToPrimaryValue()
-            curencyListElementPublisher.send(0)
-        }
-            
-        func setValueConvertedValue(code: String, value: String) {
-            dataModel.convertingValues.setValueConvertedValue(code: code, value: value)
-        }
+    func getCurrencyValue(code: String) -> String {
+        return dataModel.convertingValues.getCurrencyValue(code: code)
+    }
+    
 }
+
+
 
 
 extension CurrencyListViewModel : ValuesListDataMapperProtocol {

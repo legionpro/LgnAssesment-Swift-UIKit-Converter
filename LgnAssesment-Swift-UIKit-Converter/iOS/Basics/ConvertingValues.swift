@@ -49,8 +49,14 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol {
         item.value = value
     }
     
-    func getCurrencyValue(_ index: Int) -> String {
+    func getCurrencyValue(index: Int) -> String {
         guard list.count >= index - 1 else {return "0"}
         return list[index].value
+    }
+    
+    
+    func getCurrencyValue(code: String) -> String {
+        guard let item = list.first(where: {$0.code == code}) else { return "" }
+        return item.value
     }
 }

@@ -17,5 +17,6 @@ protocol ConvertingMethodsProtocol {
     func deleteSymbolFromToPrimaryValue()
     func cleanToPrimaryValue()
     func setValueConvertedValue(code: String, value: String)
-    func getCurrencyValue(_ index: Int) -> String
+    func getCurrencyValue(index: Int) -> String
+    func getCurrencyValue(code: String) -> String
 }

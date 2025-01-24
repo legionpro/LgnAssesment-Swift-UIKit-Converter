@@ -7,9 +7,13 @@
 
 import Foundation
 
+protocol CurrencyListDataModelProtocol {
+    var dataModel: CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol { get set}
+}
+
 protocol CurrencyListModelProtocol {
     var convertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol { get }
-    //var primaryValue: String { get set }
+
     var mainCurrencyList: [CurrencyInfo]  { get }
     var primaryCurrencySelectionFlag: Bool { get set }
     func mainCurrencyListValidate()
