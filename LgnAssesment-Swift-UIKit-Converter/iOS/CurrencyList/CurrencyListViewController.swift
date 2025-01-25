@@ -59,7 +59,6 @@ extension CurrencyListViewController {
 
     private func bindListPublisher() {
         model.curencyListElementPublisher
-            .removeDuplicates()
             .sink(
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] value in

@@ -217,9 +217,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     ) {
         model.primaryCurrencySelectionFlag =
             model.favoriteCurrencyList[indexPath.row].isPrimary
-        model.curencyListElementPublisher.send(-1)
-        keyBoardCurrencyScrollView.scrollToView(
-            view: currencySlideView, animated: true)
+            self.keyBoardCurrencyScrollView.scrollToItem(at: IndexPath(item: 1 , section: 0), at: .right, animated: true)
+            self.keyBoardCurrencyScrollView.setNeedsLayout()
+            self.model.curencyListElementPublisher.send(-1)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
