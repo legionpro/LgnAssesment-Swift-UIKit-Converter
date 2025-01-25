@@ -283,19 +283,19 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 extension MainViewController: KeyBoardProtocol {
 
     func digitButtonTap(_ tag: BoardKeysTags) {
-        model.addSymbolToPrimaryValue(tag)
+        _ = model.addSymbolToPrimaryValue(tag)
     }
 
     func delimiterButtonTap() {
-        model.addSymbolToPrimaryValue(.delimiter)
+        _ = model.addSymbolToPrimaryValue(.delimiter)
     }
     
     func deleteButtonTap() {
-        model.deleteSymbolFromToPrimaryValue()
+        _ = model.deleteSymbolFromToPrimaryValue()
     }
 
     func clearButtonTap() {
-        model.cleanToPrimaryValue()
+        _ = model.cleanToPrimaryValue()
     }
 }
 
@@ -308,6 +308,7 @@ extension MainViewController {
 
     private func bindPrimaryCurrencyValuePublisher() {
         model.primaryCurrencyValuePublisher
+            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
                 self?.updateCurrencyValuesList(createTimerFlag: true)
             })

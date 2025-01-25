@@ -54,6 +54,7 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol, Ob
             flag = true
         } else {
             list[0].value = "0"
+            flag = true
         }
         return (flag,list[0].value)
     }
