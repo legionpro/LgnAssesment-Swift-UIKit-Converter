@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import OSLog
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol & CurrencyListDataModelProtocol , ObservableObject {
 
@@ -106,18 +107,30 @@ extension CurrencyListViewModel: ConvertingMethodsProtocol {
         return dataModel.convertingValues.getCurrencyValue(code: code)
     }
     
+    func setPreviousPrimaryValue(_ value: String) {
+        dataModel.convertingValues.setPreviousPrimaryValue(value)
+    }
+    
+    func getPreviousPrimaryValue() -> String {
+        return dataModel.convertingValues.getPreviousPrimaryValue()
+    }
 }
 
 extension CurrencyListViewModel : ValuesListDataMapperProtocol {
     
     func updateCurrencyValuesList() {
+        let array = ["0","0.0",".",".0","0.00",".00"]
         bag = Set<AnyCancellable>()
         let from = dataModel.convertingValues.list[0].code
         let value = dataModel.convertingValues.list[0].value
-        for item in dataModel.convertingValues.list {
-            if item.code != from {
-                resetValuesListItem(from: from, to: item.code, value: value)
+        if !(self.getPreviousPrimaryValue() == value && (array.contains(self.getPreviousPrimaryValue()) && !self.failureFlag)) {
+            for item in dataModel.convertingValues.list {
+                if item.code != from {
+                    resetValuesListItem(from: from, to: item.code, value: value)
+                }
             }
+        } else {
+            Logger.statistics.debug("API stopped via the value is 0")
         }
     }
 
@@ -131,16 +144,17 @@ extension CurrencyListViewModel : ValuesListDataMapperProtocol {
             .sink { [self] completion in
                 switch completion {
                 case .finished:
-                  print("All the requests are done")
+                    Logger.statistics.debug("=== All the requests are done ===")
                 case .failure(let apiError):
                     self.failureFlag = true
                     curencyListElementPublisher.send(0)
-                  print("An API error caused a problem \(apiError)")
+                    Logger.statistics.error("An API error caused a problem \(apiError)")
                 }
             } receiveValue: { [self] result in
-                    if let value = self.itemResponseToItem(result) {
+                    if let res = self.itemResponseToItem(result) {
                         self.failureFlag = false
-                        self.dataModel.convertingValues.setValueConvertedValue(code: value.code, value: value.value)
+                        self.dataModel.convertingValues.setValueConvertedValue(code: res.code, value: res.value)
+                        self.setPreviousPrimaryValue(value)
                         curencyListElementPublisher.send(0)
                     }
               }

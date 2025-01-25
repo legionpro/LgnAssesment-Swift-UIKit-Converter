@@ -10,6 +10,9 @@ import Combine
 
 protocol ConvertingValuesProtocol {
     var list: [ConvertingValuesInfo] { get set }
+    var previousPrimaryvalue: String { get set }
+    
+
 }
 
 protocol ConvertingMethodsProtocol {
@@ -19,4 +22,6 @@ protocol ConvertingMethodsProtocol {
     func setValueConvertedValue(code: String, value: String)
     func getCurrencyValue(index: Int) -> String
     func getCurrencyValue(code: String) -> String
+    func setPreviousPrimaryValue(_ value: String)
+    func getPreviousPrimaryValue() -> String 
 }

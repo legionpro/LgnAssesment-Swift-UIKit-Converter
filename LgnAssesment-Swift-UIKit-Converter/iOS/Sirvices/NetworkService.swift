@@ -10,6 +10,7 @@
 
 import Foundation
 import Combine
+import OSLog
 
 let kServerCollectionObjectsUrl = "http://"
 let kApiBasicPath = "api.evp.lt/currency/commercial/exchange/"
@@ -101,7 +102,7 @@ class NetworkService: NetworkServiceProtocol {
                 for (key, value) in allHeaders {
                     urlRequest.setValue(value, forHTTPHeaderField: key)
             }
-            print(urlRequest)
+            Logger.statistics.debug("(\(urlRequest))")
             return URLSession.shared.dataTaskPublisher(for: urlRequest)
                 .subscribe(on: DispatchQueue.global(qos: .default))
                 .tryMap { (data, response) -> Data in

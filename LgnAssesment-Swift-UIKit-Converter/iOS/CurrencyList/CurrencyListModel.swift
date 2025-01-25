@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import OSLog
 
 class CurrencyListModel: CurrencyListModelProtocol {
 
@@ -159,7 +160,7 @@ extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
                 let objs = try decoder.decode( [ConvertingValuesInfo].self, from: data)
                 list = objs
             } catch {
-                print("Unable to Decode Notes (\(error))")
+                Logger.statistics.error("Unable to Decode CurrencyListModel (\(error))")
             }
         }
         return list
@@ -187,7 +188,7 @@ extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
             UserDefaults.standard.set(data, forKey: CurrencyListModel.key)
             UserDefaults.standard.synchronize()
         } catch {
-            print("Unable to Encode Array of Notes (\(error))")
+            Logger.statistics.error("Unable to Decode CurrencyListModel (\(error))")
         }
     }
 }

@@ -7,6 +7,7 @@
 
 import Combine
 import UIKit
+import OSLog
 
 class MainViewController: UIViewController, FavoriteCurrencyProtocol {
 
@@ -15,6 +16,8 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
     private var model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol & ValuesListDataMapperProtocol
     private let favoriteCellReuseIdentifier = "favoritecell"
 
+    private var timer: Timer?
+    
     init(model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol & ValuesListDataMapperProtocol, childKeyBoard: KeyBoardViewControllerProtocol & UIViewController) {
         self.model = model
         self.childKeyBoard = childKeyBoard
@@ -151,9 +154,9 @@ class MainViewController: UIViewController, FavoriteCurrencyProtocol {
         super.viewDidAppear(animated)
         layoutView()
         favoriteCurrencyTableView.reloadData()
-        model.updateCurrencyValuesList()
+        self.updateCurrencyValuesList(createTimerFlag: true)
     }
-
+    
     func setupSlideScrollView() {
         func setupKeyboardSlide() {
             keyboardSlideView.frame = CGRect(
@@ -299,8 +302,6 @@ extension MainViewController: KeyBoardProtocol {
 extension MainViewController {
     private func setUpBinding() {
         bindList()
-        bindLastUpdated()
-        bindCurrentValue()
         bindListPublisher()
         bindPrimaryCurrencyValuePublisher()
     }
@@ -308,9 +309,7 @@ extension MainViewController {
     private func bindPrimaryCurrencyValuePublisher() {
         model.primaryCurrencyValuePublisher
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-                
-                // TOD:
-                print("------------------TOD SART RELOADING after chages value--------------------------------------")
+                self?.updateCurrencyValuesList(createTimerFlag: true)
             })
             .store(in: &box)
     }
@@ -323,22 +322,6 @@ extension MainViewController {
                     .store(in: &box)
     }
 
-    private func bindLastUpdated() {
-        //        model.$lastUpdated
-        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-        //                self!.favoriteCurrencyTableView.reloadData()
-        //            })
-        //            .store(in: &box)
-    }
-
-    private func bindCurrentValue() {
-        //        model.$currentValue
-        //            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-        //                self!.favoriteCurrencyTableView.reloadData()
-        //            })
-        //            .store(in: &box)
-    }
-
     private func bindListPublisher() {
         model.curencyListElementPublisher
             .sink(
@@ -348,5 +331,16 @@ extension MainViewController {
                 }
             )
             .store(in: &box)
+    }
+    
+    
+    // update currencies values  from network, recreate timer when it fiers not by timer
+    @objc private func updateCurrencyValuesList(createTimerFlag: Bool = false) {
+        Logger.statistics.debug("=== update currency values with flag: \(createTimerFlag) ===")
+        if createTimerFlag {
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(updateCurrencyValuesList), userInfo: nil, repeats: true)
+        }
+        model.updateCurrencyValuesList()
     }
 }

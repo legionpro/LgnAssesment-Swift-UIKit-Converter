@@ -10,6 +10,19 @@ import Combine
 
 
 class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol, ObservableObject {
+    
+    // to trav the value just to avoid multiple request with primaryValue == 0
+    var previousPrimaryvalue = ""
+    
+    func setPreviousPrimaryValue(_ value: String) {
+        previousPrimaryvalue = value
+    }
+    
+    func getPreviousPrimaryValue() -> String {
+        return previousPrimaryvalue
+    }
+    
+    
     lazy var list: [ConvertingValuesInfo] = {
         []
     }()
