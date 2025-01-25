@@ -12,20 +12,22 @@ import Foundation
 //@MainActor
 protocol ValuesListDataMapperProtocol {
     func updateCurrencyValuesList()
-    func itemResponseToItem(_ response: RequestResponseValue?) -> ConvertingValuesInfo?
+    func itemResponseToItem(_ response: RequestResponseValue?)
+        -> ConvertingValuesInfo?
 }
 
 // FIXME: - needs real implematation
 extension ValuesListDataMapperProtocol {
-    func itemResponseToItem(_ response: RequestResponseValue?) -> ConvertingValuesInfo? {
+    func itemResponseToItem(_ response: RequestResponseValue?)
+        -> ConvertingValuesInfo?
+    {
         var resultValue: ConvertingValuesInfo?
         if let resp = response {
             resultValue = ConvertingValuesInfo(
-                    code: resp.currency,
-                    value: resp.amount
-                )
-            }
+                code: resp.currency,
+                value: resp.amount
+            )
+        }
         return resultValue
     }
 }
-

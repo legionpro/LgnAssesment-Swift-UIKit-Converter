@@ -44,7 +44,10 @@ final class LaunchScreenViewController: UIViewController {
         self.view.addSubview(contentView)
         self.view.addSubview(animationView!)
         animationView!.play(completion: { (finished) in
-            let model = CurrencyListViewModel(dataModel: CurrencyListModel(convertingValues: ConvertingValues()), networkService: NetworkService() )
+            let model = CurrencyListViewModel(
+                dataModel: CurrencyListModel(
+                    convertingValues: ConvertingValues()),
+                networkService: NetworkService())
             let kvc = KeyBoardViewController(boardView: NumericKeyboard())
             let vc = MainViewController(model: model, childKeyBoard: kvc)
             self.navigationController?.setViewControllers([vc], animated: false)
@@ -90,5 +93,4 @@ final class LaunchScreenViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-
 }

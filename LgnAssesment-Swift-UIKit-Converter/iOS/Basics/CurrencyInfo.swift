@@ -14,8 +14,11 @@ class CurrencyInfo {
     let name: String
     var isFavorite: Bool
     var isPrimary: Bool
-    
-    init(code: String, symbol: String, countryFlag: String, name: String, isFavorite: Bool, isPrimary: Bool) {
+
+    init(
+        code: String, symbol: String, countryFlag: String, name: String,
+        isFavorite: Bool, isPrimary: Bool
+    ) {
         self.code = code
         self.symbol = symbol
         self.countryFlag = countryFlag

@@ -9,7 +9,7 @@ import Foundation
 
 struct RequestResponseValue: Codable, Sendable {
     let amount, currency: String
-    
+
     init(amount: String, currency: String) {
         self.amount = amount
         self.currency = currency

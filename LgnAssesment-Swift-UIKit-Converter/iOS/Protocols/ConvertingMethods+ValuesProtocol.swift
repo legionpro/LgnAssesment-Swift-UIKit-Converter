@@ -5,13 +5,12 @@
 //  Created by Oleh Poremskyy on 22.01.2025.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 protocol ConvertingValuesProtocol {
     var list: [ConvertingValuesInfo] { get set }
     var previousPrimaryvalue: String { get set }
-    
 
 }
 
@@ -23,5 +22,5 @@ protocol ConvertingMethodsProtocol {
     func getCurrencyValue(index: Int) -> String
     func getCurrencyValue(code: String) -> String
     func setPreviousPrimaryValue(_ value: String)
-    func getPreviousPrimaryValue() -> String 
+    func getPreviousPrimaryValue() -> String
 }

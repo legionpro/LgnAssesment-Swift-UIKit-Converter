@@ -23,12 +23,12 @@ struct Constants {
     static let okColor = UIColor.green
     static let warningMessage = "the data was not updated"
     static let okMessage = "updated: "
-    
+
     struct mainController {
         static let contentMargines: CGFloat = 8
         static let pageControlHeight: CGFloat = 30
     }
-    
+
     struct FavoriteCurrencyTableView {
         static let cellHeight: CGFloat = 60.0
         static let flagImageHeight: CGFloat = 100.0
@@ -45,7 +45,7 @@ struct Constants {
         static let valueFontSize: CGFloat = 36.0
         static let textColor: UIColor = .black
     }
-    
+
     struct CurrencyListViewCell {
         static let cellHeight: CGFloat = 60.0
         static let codeFontSize: CGFloat = 21.0
@@ -58,7 +58,6 @@ struct Constants {
         static let contentMargin: CGFloat = 8.0
     }
 
-    
     static func UIColorFromRGB(rgbValue: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,

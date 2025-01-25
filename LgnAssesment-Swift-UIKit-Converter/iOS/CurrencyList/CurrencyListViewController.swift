@@ -5,15 +5,14 @@
 //  Created by Oleh Poremskyy on 19.01.2025.
 //
 
-import UIKit
 import Combine
+import UIKit
 
 class CurrencyListViewController: UIViewController {
 
     private var box = Set<AnyCancellable>()
     var tableView: UITableView = UITableView()
     let cellReuseIdentifier = "cell"
-    weak var currencyDelegate: FavoriteCurrencyProtocol?
     private var model: CurrencyListViewModelProtocol
 
     init(model: CurrencyListViewModel) {
@@ -35,7 +34,7 @@ class CurrencyListViewController: UIViewController {
     func reloadCurrencyList() {
         tableView.reloadData()
     }
-    
+
     private func setupCurrencyTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -44,7 +43,7 @@ class CurrencyListViewController: UIViewController {
             forCellReuseIdentifier: cellReuseIdentifier)
         self.tableView.backgroundColor = .clear
         self.view.addSubview(tableView)
-        
+
     }
 
     override func viewWillLayoutSubviews() {
@@ -57,17 +56,22 @@ extension CurrencyListViewController {
     private func setUpBinding() {
         bindListPublisher()
     }
-    
+
     private func bindListPublisher() {
         model.curencyListElementPublisher
-            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] value in
-                self!.reloadCurrencyList()
-            })
+            .removeDuplicates()
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] value in
+                    self!.reloadCurrencyList()
+                }
+            )
             .store(in: &box)
     }
 }
 
-extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource {
+extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
+{
 
     func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath
@@ -81,7 +85,9 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
         return model.mainList.count
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView, didSelectRowAt indexPath: IndexPath
+    ) {
         if !model.primaryCurrencySelectionFlag {
             if !model.mainList[indexPath.row].isPrimary {
                 model.toggleFavorite(at: indexPath.row)
@@ -91,9 +97,8 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
                 model.setPrimary(at: indexPath.row)
             }
         }
-            
-    }
 
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
         -> UITableViewCell
@@ -102,7 +107,7 @@ extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
             tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)
             as! CurrencyListViewCell
         let item = model.mainList[indexPath.row]
-        cell.showFavoriteFlag = model.primaryCurrencySelectionFlag
+        cell.showFavoriteFlag = !model.primaryCurrencySelectionFlag
         cell.setUpCellData(item)
         if item.isPrimary {
             cell.backgroundColor = Constants.keyBoardColorisHighlighted

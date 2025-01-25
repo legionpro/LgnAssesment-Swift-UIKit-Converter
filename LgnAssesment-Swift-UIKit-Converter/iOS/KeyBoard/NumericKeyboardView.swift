@@ -10,7 +10,6 @@ import UIKit
 //enum BoardKeys
 
 class NumericKeyboard: UIView {
-    //weak var target: (UIKeyInput & UITextInput)?
     weak var keyBoardDelegate: KeyBoardProtocol?
     private let generator = UIImpactFeedbackGenerator(style: .heavy)
 
@@ -49,9 +48,11 @@ class NumericKeyboard: UIView {
         button.accessibilityTraits = [.keyboardKey]
         button.accessibilityLabel = "Delete"
         button.addTarget(
-            self, action: #selector(deleteButtonAction(_:)), for: .touchUpInside)
+            self, action: #selector(deleteButtonAction(_:)), for: .touchUpInside
+        )
         button.addTarget(
-            self, action: #selector(clearButtonAction(_:)), for: .touchDownRepeat)
+            self, action: #selector(clearButtonAction(_:)),
+            for: .touchDownRepeat)
         return button
     }()
 
@@ -66,7 +67,8 @@ class NumericKeyboard: UIView {
         button.accessibilityTraits = [.keyboardKey]
         button.accessibilityLabel = "Delimiter"
         button.addTarget(
-            self, action: #selector(delimiterButtonAction(_:)), for: .touchUpInside)
+            self, action: #selector(delimiterButtonAction(_:)),
+            for: .touchUpInside)
         return button
     }()
 
@@ -89,15 +91,17 @@ extension NumericKeyboard {
 
     @objc func digitButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
-        guard let tag = BoardKeysTags(rawValue: "\(sender.digit)") else { return }
+        guard let tag = BoardKeysTags(rawValue: "\(sender.digit)") else {
+            return
+        }
         keyBoardDelegate?.digitButtonTap(tag)
     }
-    
+
     @objc func delimiterButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
         keyBoardDelegate?.delimiterButtonTap()
     }
-    
+
     @objc func deleteButtonAction(_ sender: DigitButton) {
         generator.impactOccurred()
         keyBoardDelegate?.deleteButtonTap()
@@ -108,7 +112,6 @@ extension NumericKeyboard {
         keyBoardDelegate?.clearButtonTap()
     }
 
-    
 }
 
 // MARK: - Private initial configuration methods
@@ -152,5 +155,4 @@ extension NumericKeyboard {
         stackView.distribution = .fillEqually
         return stackView
     }
-
 }
