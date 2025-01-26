@@ -12,7 +12,7 @@ import OSLog
 // MVVM viewModel for CurrencyListViewController
 
 class CurrencyListViewModel: CurrencyListViewModelProtocol
-        & CurrencyListDataModelProtocol, ObservableObject
+        & CurrencyListDataModelProtocol//, ObservableObject
 {
 
     // publishers and subscribers to control changing int the Favoritelist and values list

@@ -10,8 +10,7 @@ import Foundation
 
 // container to keep actual results of the currency converting process and for state persistence
 
-class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol,
-    ObservableObject
+class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol//, ObservableObject
 {
 
     // to trav the value just to avoid multiple request with primaryValue == 0
