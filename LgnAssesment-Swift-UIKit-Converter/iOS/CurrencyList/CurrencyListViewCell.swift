@@ -40,8 +40,10 @@ final class CurrencyListViewCell: CurrencyViewCell {
         currencyFlagLabel.text = currency.countryFlag
         if currency.isPrimary {
             favoriteImage.alpha = 0.7
+            selectionStyle = .none
         } else {
             favoriteImage.alpha = 0.5
+            selectionStyle = .gray
         }
         if currency.isFavorite {
             favoriteImage.image = UIImage(systemName: "star.fill")
