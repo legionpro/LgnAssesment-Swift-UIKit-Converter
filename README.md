@@ -9,7 +9,7 @@ git@github.com:legionpro/LgnAssesment-Swift-UIKit-Converter.git
 
 ## Important Notes:
 
-I am going to move forward with this project to develop more improvements and to publish the app on App Store. So, please do not use this project in commercial purposes. For the review only.
+Please note, I am going to move forward with this project to develop more improvements and to publish the app on App Store. So, please do not use this project in commercial purposes. For the review only.
 
 
 
