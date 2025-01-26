@@ -7,6 +7,8 @@
 
 import Foundation
 
+// basic list of countries
+
 extension Constants {
 
     static let CountryCurrencyList: [CurrencyInfo] = [

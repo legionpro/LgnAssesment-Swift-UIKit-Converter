@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// basic type for cells in the MainViewController colletionView
+
 class CollectionViewCell: UICollectionViewCell {
     static let identifier = "DemoCollectionViewCell"
 

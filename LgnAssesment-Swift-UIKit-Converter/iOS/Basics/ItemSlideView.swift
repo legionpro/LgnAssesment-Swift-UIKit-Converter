@@ -7,6 +7,9 @@
 
 import UIKit
 
+// container view to put into MainViewController collectionViewCell
+// separately contains controllers - keyboard and currency list
+
 class ItemSlideView: UIView {
 
     override init(frame: CGRect) {

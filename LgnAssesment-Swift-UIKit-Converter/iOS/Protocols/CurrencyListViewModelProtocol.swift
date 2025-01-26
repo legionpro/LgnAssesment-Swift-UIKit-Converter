@@ -8,6 +8,8 @@
 import Combine
 import Foundation
 
+// MVVM viewModel protocol - values and methods
+
 protocol CurrencyListViewModelProtocol {
 
     var failureFlag: Bool { get set }

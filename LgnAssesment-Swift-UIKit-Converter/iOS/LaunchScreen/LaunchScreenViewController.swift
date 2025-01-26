@@ -8,6 +8,8 @@
 import Lottie
 import UIKit
 
+// lunch screen + LottieAnimationView
+
 final class LaunchScreenViewController: UIViewController {
     private var animationView: LottieAnimationView?
     private let contentView = UIView()

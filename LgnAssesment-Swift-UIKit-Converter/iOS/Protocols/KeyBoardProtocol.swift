@@ -7,6 +7,8 @@
 
 import Foundation
 
+// keyBoard protocol
+
 protocol KeyBoardProtocol: AnyObject {
     func digitButtonTap(_ tag: BoardKeysTags)
     func deleteButtonTap()

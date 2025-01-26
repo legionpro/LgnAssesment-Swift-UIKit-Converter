@@ -8,13 +8,15 @@
 import Combine
 import Foundation
 
+// container to keep actual results of the currency converting process and for state persistence
+
 class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol,
     ObservableObject
 {
 
     // to trav the value just to avoid multiple request with primaryValue == 0
     var previousPrimaryvalue = ""
-
+    
     func setPreviousPrimaryValue(_ value: String) {
         previousPrimaryvalue = value
     }
@@ -27,6 +29,7 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol,
         []
     }()
 
+    //editing primary value (amount) for converting - initiated by keyboard
     func addSymbolToPrimaryValue(_ tag: BoardKeysTags) -> (Bool, String) {
         let falseResult = (false, "")
         guard list.count > 1 else { return falseResult }
@@ -71,6 +74,7 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol,
         return (flag, list[0].value)
     }
 
+    // keyboar double Delete key
     func cleanToPrimaryValue() -> (Bool, String) {
         guard list.count > 1 else { return (false, list[0].value) }
         guard list[0].value != "0" else { return (false, list[0].value) }
@@ -78,6 +82,7 @@ class ConvertingValues: ConvertingValuesProtocol & ConvertingMethodsProtocol,
         return (true, list[0].value)
     }
 
+    // getter/setters for vlues in the list
     func setValueConvertedValue(code: String, value: String) {
         guard let item = list.first(where: { $0.code == code }) else { return }
         item.value = value

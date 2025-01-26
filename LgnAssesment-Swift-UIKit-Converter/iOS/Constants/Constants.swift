@@ -7,6 +7,8 @@
 
 import UIKit
 
+// constants using as a settings - to easy controlling
+
 struct Constants {
     static let timerInterval: TimeInterval = 10.0
     static let color1 = UIColorFromRGB(rgbValue: 0x025951)

@@ -7,6 +7,8 @@
 
 import Foundation
 
+//basic type for ConvertingValues.list elements
+
 class ConvertingValuesInfo: Codable {
     let code: String
     var value: String

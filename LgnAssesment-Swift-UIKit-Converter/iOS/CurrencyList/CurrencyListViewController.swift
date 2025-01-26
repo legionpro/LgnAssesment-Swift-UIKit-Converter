@@ -8,6 +8,8 @@
 import Combine
 import UIKit
 
+// MVVM view in CurrencyListViewController
+
 class CurrencyListViewController: UIViewController {
 
     private var box = Set<AnyCancellable>()
@@ -52,6 +54,7 @@ class CurrencyListViewController: UIViewController {
     }
 }
 
+// MVVM view binding
 extension CurrencyListViewController {
     private func setUpBinding() {
         bindListPublisher()
@@ -69,6 +72,7 @@ extension CurrencyListViewController {
     }
 }
 
+// tableview delegate
 extension CurrencyListViewController: UITableViewDelegate, UITableViewDataSource
 {
 

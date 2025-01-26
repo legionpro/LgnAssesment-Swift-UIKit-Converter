@@ -12,6 +12,8 @@ import Combine
 import Foundation
 import OSLog
 
+// netWork service - it is implemented as the single file to move it as a separate module
+
 let kServerCollectionObjectsUrl = "http://"
 let kApiBasicPath = "api.evp.lt/currency/commercial/exchange/"
 

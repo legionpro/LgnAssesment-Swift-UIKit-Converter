@@ -7,6 +7,8 @@
 
 import Foundation
 
+// for persistence in nodel and for mediators
+
 protocol CurrencyListModelPersistenceProtocol {
     static var key: String { get }
     func getValuesFromUserDefaults() -> [ConvertingValuesInfo]

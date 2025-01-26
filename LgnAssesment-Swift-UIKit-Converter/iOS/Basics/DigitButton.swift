@@ -7,6 +7,8 @@
 
 import UIKit
 
+// basic type for keyboard buttons
+
 class DigitButton: UIButton {
     var digit: Int = 0
 

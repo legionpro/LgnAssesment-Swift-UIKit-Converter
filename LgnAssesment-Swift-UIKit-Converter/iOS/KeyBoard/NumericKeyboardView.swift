@@ -7,7 +7,8 @@
 
 import UIKit
 
-//enum BoardKeys
+
+//  root view for KeyBoardViewController
 
 class NumericKeyboard: UIView {
     weak var keyBoardDelegate: KeyBoardProtocol?

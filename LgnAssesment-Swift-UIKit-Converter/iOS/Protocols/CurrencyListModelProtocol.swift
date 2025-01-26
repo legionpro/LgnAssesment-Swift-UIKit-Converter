@@ -8,6 +8,8 @@
 import Combine
 import Foundation
 
+// MVVM model protocols - values and methods
+
 protocol CurrencyListDataModelProtocol {
     var dataModel:
         CurrencyListModelProtocol & CurrencyListModelPersistenceProtocol

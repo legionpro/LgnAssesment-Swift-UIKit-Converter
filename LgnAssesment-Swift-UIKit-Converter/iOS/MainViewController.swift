@@ -11,39 +11,24 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    //layout for three main view - favoritelist, page control, collectionView
     var scrollViewConstraints: [NSLayoutConstraint] = []
     var pageControlConstraints: [NSLayoutConstraint] = []
     var favoriteCurrencyTableViewConstraints: [NSLayoutConstraint] = []
 
+    //subscriptions
     private var box = Set<AnyCancellable>()
+
     private let childKeyBoard: KeyBoardViewControllerProtocol & UIViewController
+
+    // MVVM viewModel
     private var model:
         CurrencyListViewModelProtocol & ConvertingMethodsProtocol
             & ValuesListDataMapperProtocol
+
     private let favoriteCellReuseIdentifier = "favoritecell"
 
     private var timer: Timer?
-
-    init(
-        model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol
-            & ValuesListDataMapperProtocol,
-        childKeyBoard: KeyBoardViewControllerProtocol & UIViewController
-    ) {
-        self.model = model
-        self.childKeyBoard = childKeyBoard
-        super.init(nibName: nil, bundle: nil)
-        self.childKeyBoard.setUpKeyBoadrDelegate(self)
-        self.keyBoardCurrencyScrollView.delegate = self
-        self.favoriteCurrencyTableView.delegate = self
-        self.favoriteCurrencyTableView.dataSource = self
-        self.favoriteCurrencyTableView.register(
-            FavoriteCurrencyViewCell.self,
-            forCellReuseIdentifier: favoriteCellReuseIdentifier)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     var primaryCurrencySelectionFlag = false
 
@@ -64,7 +49,7 @@ class MainViewController: UIViewController {
         return tableView
     }()
 
-    private lazy var keyBoardCurrencyScrollView: UICollectionView = {
+    private lazy var collectionViewView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 10
@@ -91,73 +76,25 @@ class MainViewController: UIViewController {
         return pageControl
     }()
 
-    private func setupSubViews() {
-        view.addSubview(keyBoardCurrencyScrollView)
-        view.addSubview(pageControl)
-        view.addSubview(favoriteCurrencyTableView)
-        view.bringSubviewToFront(pageControl)
+    init(
+        model: CurrencyListViewModelProtocol & ConvertingMethodsProtocol
+            & ValuesListDataMapperProtocol,
+        childKeyBoard: KeyBoardViewControllerProtocol & UIViewController
+    ) {
+        self.model = model
+        self.childKeyBoard = childKeyBoard
+        super.init(nibName: nil, bundle: nil)
+        self.childKeyBoard.setUpKeyBoadrDelegate(self)
+        self.collectionViewView.delegate = self
+        self.favoriteCurrencyTableView.delegate = self
+        self.favoriteCurrencyTableView.dataSource = self
+        self.favoriteCurrencyTableView.register(
+            FavoriteCurrencyViewCell.self,
+            forCellReuseIdentifier: favoriteCellReuseIdentifier)
     }
 
-    private func layoutViews() {
-        layoutScrollView()
-        layoutPageControl()
-        layoutFavoriteCurrencyTableView()
-    }
-
-    func activateLayoutConstraints() {
-        NSLayoutConstraint.activate(scrollViewConstraints)
-        NSLayoutConstraint.activate(pageControlConstraints)
-        NSLayoutConstraint.activate(favoriteCurrencyTableViewConstraints)
-    }
-
-    private func layoutScrollView() {
-        keyBoardCurrencyScrollView.translatesAutoresizingMaskIntoConstraints =
-            false
-        scrollViewConstraints = [
-            keyBoardCurrencyScrollView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            keyBoardCurrencyScrollView.leftAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                constant: Constants.mainController.contentMargines),
-            keyBoardCurrencyScrollView.rightAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.rightAnchor,
-                constant: -1 * Constants.mainController.contentMargines),
-            keyBoardCurrencyScrollView.heightAnchor.constraint(
-                equalToConstant: view.frame.height / 2),
-        ]
-    }
-
-    private func layoutPageControl() {
-        pageControlConstraints = [
-            pageControl.bottomAnchor.constraint(
-                equalTo: keyBoardCurrencyScrollView.topAnchor, constant: 0),
-            pageControl.centerXAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            pageControl.heightAnchor.constraint(
-                equalToConstant: Constants.mainController.pageControlHeight),
-        ]
-        pageControl.pageIndicatorTintColor = Constants.color5
-            .withAlphaComponent(0.3)
-        pageControl.currentPageIndicatorTintColor = Constants.color5
-    }
-
-    private func layoutFavoriteCurrencyTableView() {
-        favoriteCurrencyTableView.translatesAutoresizingMaskIntoConstraints =
-            false
-        favoriteCurrencyTableViewConstraints = [
-            favoriteCurrencyTableView.bottomAnchor.constraint(
-                equalTo: pageControl.topAnchor, constant: 0),
-            favoriteCurrencyTableView.leftAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                constant: Constants.FavoriteCurrencyTableView.contentMargin),
-            favoriteCurrencyTableView.rightAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.rightAnchor,
-                constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin
-            ),
-            favoriteCurrencyTableView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor,
-                constant: Constants.FavoriteCurrencyTableView.contentMargin),
-        ]
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -198,6 +135,79 @@ class MainViewController: UIViewController {
     }
 }
 
+// autolayout
+extension MainViewController {
+    private func setupSubViews() {
+        view.addSubview(collectionViewView)
+        view.addSubview(pageControl)
+        view.addSubview(favoriteCurrencyTableView)
+        view.bringSubviewToFront(pageControl)
+    }
+
+    private func layoutViews() {
+        layoutScrollView()
+        layoutPageControl()
+        layoutFavoriteCurrencyTableView()
+    }
+
+    func activateLayoutConstraints() {
+        NSLayoutConstraint.activate(scrollViewConstraints)
+        NSLayoutConstraint.activate(pageControlConstraints)
+        NSLayoutConstraint.activate(favoriteCurrencyTableViewConstraints)
+    }
+
+    private func layoutScrollView() {
+        collectionViewView.translatesAutoresizingMaskIntoConstraints =
+            false
+        scrollViewConstraints = [
+            collectionViewView.bottomAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            collectionViewView.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.mainController.contentMargines),
+            collectionViewView.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: -1 * Constants.mainController.contentMargines),
+            collectionViewView.heightAnchor.constraint(
+                equalToConstant: view.frame.height / 2),
+        ]
+    }
+
+    private func layoutPageControl() {
+        pageControlConstraints = [
+            pageControl.bottomAnchor.constraint(
+                equalTo: collectionViewView.topAnchor, constant: 0),
+            pageControl.centerXAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            pageControl.heightAnchor.constraint(
+                equalToConstant: Constants.mainController.pageControlHeight),
+        ]
+        pageControl.pageIndicatorTintColor = Constants.color5
+            .withAlphaComponent(0.3)
+        pageControl.currentPageIndicatorTintColor = Constants.color5
+    }
+
+    private func layoutFavoriteCurrencyTableView() {
+        favoriteCurrencyTableView.translatesAutoresizingMaskIntoConstraints =
+            false
+        favoriteCurrencyTableViewConstraints = [
+            favoriteCurrencyTableView.bottomAnchor.constraint(
+                equalTo: pageControl.topAnchor, constant: 0),
+            favoriteCurrencyTableView.leftAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin),
+            favoriteCurrencyTableView.rightAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                constant: -1 * Constants.FavoriteCurrencyTableView.contentMargin
+            ),
+            favoriteCurrencyTableView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Constants.FavoriteCurrencyTableView.contentMargin),
+        ]
+    }
+}
+
+// UITableViewDelegate
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(
@@ -217,9 +227,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     ) {
         model.primaryCurrencySelectionFlag =
             model.favoriteCurrencyList[indexPath.row].isPrimary
-            self.keyBoardCurrencyScrollView.scrollToItem(at: IndexPath(item: 1 , section: 0), at: .right, animated: true)
-            self.keyBoardCurrencyScrollView.setNeedsLayout()
-            self.model.curencyListElementPublisher.send(-1)
+        self.collectionViewView.scrollToItem(
+            at: IndexPath(item: 1, section: 0), at: .right, animated: true)
+        self.collectionViewView.setNeedsLayout()
+        self.model.curencyListElementPublisher.send(-1)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -317,8 +328,8 @@ extension MainViewController: UICollectionViewDelegate,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let width = self.keyBoardCurrencyScrollView.frame.width
-        let height = self.keyBoardCurrencyScrollView.frame.height
+        let width = self.collectionViewView.frame.width
+        let height = self.collectionViewView.frame.height
         return CGSize(width: width, height: height)
     }
 

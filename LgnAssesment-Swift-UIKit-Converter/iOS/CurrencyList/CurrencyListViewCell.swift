@@ -7,6 +7,8 @@
 
 import UIKit
 
+//cell type for CurrencyListViewController.tableView
+
 final class CurrencyListViewCell: CurrencyViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -68,6 +70,7 @@ final class CurrencyListViewCell: CurrencyViewCell {
     }
 }
 
+// aoutoLayout methods
 extension CurrencyListViewCell {
 
     private func setupBottomSeparator() {

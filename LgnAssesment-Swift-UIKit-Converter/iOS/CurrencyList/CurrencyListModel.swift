@@ -9,6 +9,8 @@ import Combine
 import Foundation
 import OSLog
 
+// MVVM model for currencyListViewContoller
+
 class CurrencyListModel: CurrencyListModelProtocol {
 
     var primaryCurrencySelectionFlag = false
@@ -82,7 +84,7 @@ class CurrencyListModel: CurrencyListModelProtocol {
     }
 
     // get element to remove from favorites
-    //just to improve user experience
+    // just to improve user experience
     // it just helps not to ask user for the additonal operation
     private func getIndexToRemoFavorite() -> Int? {
         return mainCurrencyList.firstIndex(where: {
@@ -111,6 +113,7 @@ class CurrencyListModel: CurrencyListModelProtocol {
         return result
     }
 
+    // uses when the Primary currency is changed
     func setPrimary(at index: Int) -> Bool {
         guard let pindex = getIndexOfPrimary() else { return false}
         guard pindex != index else { return false}
@@ -126,7 +129,7 @@ class CurrencyListModel: CurrencyListModelProtocol {
         return result
     }
 
-    // reset values array according to new state of main currency list list
+    // to reset values array according to new state of main currency list list
     func resetValuesFromCurrentStateOfMainList() -> Bool {
         var flag = true
         var newList: [ConvertingValuesInfo] = []
@@ -166,7 +169,7 @@ class CurrencyListModel: CurrencyListModelProtocol {
         return resflag
     }
     
-    // just cjpare array with convertingValues.list each element
+    // to compare the array with convertingValues.list - element by
     func isListsIsEqual(_ array: [ConvertingValuesInfo]) -> Bool {
         var result = true
         guard (convertingValues.list.count > 0) , (array.count > 0) else {return false}
@@ -180,7 +183,7 @@ class CurrencyListModel: CurrencyListModelProtocol {
     }
 }
 
-// to work with the user Defaults
+// to work with the user Defaults - persistence
 extension CurrencyListModel: CurrencyListModelPersistenceProtocol {
     static var key: String { "CurrencyListModelPersistenceProtocol" }
 

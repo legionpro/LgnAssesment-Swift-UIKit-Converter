@@ -7,6 +7,8 @@
 
 import Foundation
 
+// network responce type - for JSON decoder
+
 struct RequestResponseValue: Codable, Sendable {
     let amount, currency: String
 

@@ -8,10 +8,11 @@
 import Combine
 import Foundation
 
+// to work with list: [ConvertingValuesInfo] in model and in mediators
+
 protocol ConvertingValuesProtocol {
     var list: [ConvertingValuesInfo] { get set }
     var previousPrimaryvalue: String { get set }
-
 }
 
 protocol ConvertingMethodsProtocol {

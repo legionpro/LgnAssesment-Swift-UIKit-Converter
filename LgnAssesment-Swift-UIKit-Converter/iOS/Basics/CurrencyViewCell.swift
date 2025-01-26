@@ -7,6 +7,8 @@
 
 import UIKit
 
+//basic class for both FavoriteCurrencyViewCell and CurrencyListViewCell
+
 class CurrencyViewCell: UITableViewCell {
 
     let crossImage = UIImage(named: "cross.png")!

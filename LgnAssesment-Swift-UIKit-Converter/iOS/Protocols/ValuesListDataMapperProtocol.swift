@@ -9,14 +9,13 @@ import Foundation
 
 // MARK: - jsut protocol for mapping  response data to values list
 
-//@MainActor
 protocol ValuesListDataMapperProtocol {
     func updateCurrencyValuesList()
     func itemResponseToItem(_ response: RequestResponseValue?)
         -> ConvertingValuesInfo?
 }
 
-// FIXME: - needs real implematation
+// always needs real implematation for real cases
 extension ValuesListDataMapperProtocol {
     func itemResponseToItem(_ response: RequestResponseValue?)
         -> ConvertingValuesInfo?

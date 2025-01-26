@@ -9,10 +9,13 @@ import Combine
 import Foundation
 import OSLog
 
+// MVVM viewModel for CurrencyListViewController
+
 class CurrencyListViewModel: CurrencyListViewModelProtocol
         & CurrencyListDataModelProtocol, ObservableObject
 {
 
+    // publishers and subscribers to control changing int the Favoritelist and values list
     private var bag = Set<AnyCancellable>()
     var curencyListElementPublisher = PassthroughSubject<Int, Never>()
     var primaryCurrencyValuePublisher = PassthroughSubject<String, Never>()
@@ -31,10 +34,12 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol
         self.networkService = networkService
     }
 
+    // all countries list
     var mainList: [CurrencyInfo] {
         return dataModel.mainCurrencyList
     }
 
+    // set flag to select new Primary Currency ( hide favorite flag in the cell)
     var primaryCurrencySelectionFlag: Bool {
         get {
             return dataModel.primaryCurrencySelectionFlag
@@ -44,7 +49,7 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol
         }
     }
 
-    // just to get correct list of favorite currency
+    // just to get correct list of favorite currency list
     var favoriteCurrencyList: [CurrencyInfo] {
         dataModel.mainCurrencyListValidate()
         var result = dataModel.mainCurrencyList.filter({
@@ -60,6 +65,7 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol
         return result
     }
 
+    // toggle isPrimary flag for currency
     func toggleFavorite(at index: Int) {
         let res = dataModel.toggleFavorite(at: index)
         curencyListElementPublisher.send(index)
@@ -69,6 +75,7 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol
 
     }
 
+    // setter isPrimary flag for currency
     func setPrimary(at index: Int) {
         let res = dataModel.setPrimary(at: index)
         curencyListElementPublisher.send(index)
@@ -77,12 +84,14 @@ class CurrencyListViewModel: CurrencyListViewModelProtocol
         }
     }
 
+    // values list persistence
     func setDataToUserDefaults() {
         dataModel.setValuesToUserDefaults()
     }
 
 }
 
+//mediator method to communicate between keyboard and convertingValues in the model
 extension CurrencyListViewModel: ConvertingMethodsProtocol {
 
     func addSymbolToPrimaryValue(_ tag: BoardKeysTags) -> (Bool, String) {
@@ -134,8 +143,10 @@ extension CurrencyListViewModel: ConvertingMethodsProtocol {
     }
 }
 
+// updating data from network
 extension CurrencyListViewModel: ValuesListDataMapperProtocol {
 
+    // checking to avoid useless network request
     func updateCurrencyValuesList() {
         let array = ["0", "0.0", ".", ".0", "0.00", ".00"]
         bag = Set<AnyCancellable>()
@@ -155,6 +166,7 @@ extension CurrencyListViewModel: ValuesListDataMapperProtocol {
         }
     }
 
+    // network request
     func resetValuesListItem(from: String, to: String, value: String) {
         let pub: AnyPublisher<RequestResponseValue, APIError> = self
             .networkService.request(

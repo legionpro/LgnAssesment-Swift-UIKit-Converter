@@ -7,6 +7,8 @@
 
 import Foundation
 
+// the keyboard buttons enum
+
 enum BoardKeysTags: String {
     case zero = "0"
     case one = "1"

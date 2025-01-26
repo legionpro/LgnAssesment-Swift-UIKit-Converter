@@ -7,6 +7,9 @@
 
 import UIKit
 
+// keyBoard controller, put it into ItemSlideView - the basic view for MainViewController collectionViewCell
+// and add it as child viewController for MainViewController
+
 protocol KeyBoardViewControllerProtocol {
     var boardView: NumericKeyboard { get set }
 

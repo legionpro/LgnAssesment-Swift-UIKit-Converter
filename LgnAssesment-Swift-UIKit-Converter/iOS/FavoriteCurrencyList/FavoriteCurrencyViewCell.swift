@@ -7,6 +7,8 @@
 
 import UIKit
 
+// cell tyep for tableView (favorite currency list) on MainViewController
+
 final class FavoriteCurrencyViewCell: CurrencyViewCell {
 
     var multipl: CGFloat = 0
@@ -38,6 +40,7 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
         createLayoutBottomSeparator()
         createLayoutMessage()
     }
+    
     func setUpCellData(currency: CurrencyInfo, value: String, failureFlag: Bool)
     {
         self.currency = currency
@@ -81,6 +84,7 @@ final class FavoriteCurrencyViewCell: CurrencyViewCell {
 
 }
 
+//autolayout methods
 extension FavoriteCurrencyViewCell {
 
     private func setupMessage() {

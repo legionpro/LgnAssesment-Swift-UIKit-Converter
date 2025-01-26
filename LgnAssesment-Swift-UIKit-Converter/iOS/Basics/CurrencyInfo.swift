@@ -7,6 +7,8 @@
 
 import Foundation
 
+// basic type for currency list ( Constants.CountryCurrencyList ) elements
+
 class CurrencyInfo {
     let code: String
     let symbol: String

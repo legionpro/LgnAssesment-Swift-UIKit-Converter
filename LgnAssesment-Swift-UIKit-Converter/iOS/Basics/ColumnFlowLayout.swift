@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+// just custom layout for collection view - used to switch keyboard/currency-list smoothly
+
 class ColumnFlowLayout: UICollectionViewFlowLayout {
     var cellsPerRow: Int
     let type: String?
