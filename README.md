@@ -9,7 +9,7 @@ git@github.com:legionpro/LgnAssesment-Swift-UIKit-Converter.git
 
 ## Important Notes:
 
-I am going to more forward with this project to develop more improvements and to publish the app on App Store. So, please do not use this project in commercial purposes. For the review only.
+I am going to move forward with this project to develop more improvements and to publish the app on App Store. So, please do not use this project in commercial purposes. For the review only.
 
 
 
@@ -37,7 +37,7 @@ I am going to more forward with this project to develop more improvements and to
 
 - This Git Repository contains a detailed commit history and reflects all development stages.
 
-- Used third-party libraries - Lottie API and  some UIKit Types extensions.
+- Used third-party libraries - Lottie API (needs to be updated before) and  some UIKit Types extensions.
 
 - Implemented small list of countries in separate file (just as for demo) - it can be easily updated.
 
