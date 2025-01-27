@@ -366,4 +366,14 @@ extension MainViewController: UICollectionViewDelegate,
         cell.backgroundColor = .clear
         return cell
     }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+            let pageNumber = Int(scrollView.contentOffset.x/scrollView.frame.size.width)
+            pageControl.currentPage = pageNumber <= 1 ? pageNumber : 1
+        }
+        
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+
+        }
+
 }
